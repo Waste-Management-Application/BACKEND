@@ -59,9 +59,22 @@ const customerSchema = new mongoose.Schema({
         type:Date,
         default: Date.now()
     }
+    
+    
 
 
+})
 
+customerSchema.pre('save', async function(next){
+	// checks if password is not modified
+	if(!this.isModified('password')) return next();
+
+	// encrypts password
+	this.password = await bcrypt.hash(this.password, 12);
+
+	// removes passwordConfirm field from the document
+	this.passwordConfirm = undefined
+	next()
 })
 
 const Customer = mongoose.model("Customer",customerSchema);

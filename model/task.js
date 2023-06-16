@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const taskSchema = new mongoose.Schema({
-    // taskID:{
-    //     type:String,
-    //     required:true
-    // },
+    driver:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Driver'
+    },
 
     // taskDescription:{
     //     type:String,
@@ -20,7 +20,7 @@ const taskSchema = new mongoose.Schema({
 
     taskType:{
         type: String,
-        enum : ['Empty Bin', 'Collect Bin', 'Deliver Bin'],
+        enum : ['Empty Bin', 'Deliver Bin'],
         default: 'Empty Bin'
 
     },
@@ -34,4 +34,4 @@ const taskSchema = new mongoose.Schema({
 })
 
 const Task = mongoose.model("Task",taskSchema)
-module.export= Task;
+module.exports= Task;

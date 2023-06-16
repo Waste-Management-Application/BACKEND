@@ -1,7 +1,15 @@
 const mongoose = require('mongoose')
 
 const feedbackSchema = new mongoose.Schema({
+    
+    customer:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Customer'
+    },
+    
+    
     message:{
+    
         type:String,
         required: true
     },

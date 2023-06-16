@@ -4,12 +4,12 @@ const express = require('express')
 const CatchAsync = require("../utils/CatchAsync");
 const AppError = require("../utils/apperror");
 
-const {getAllFeedbacks,createNewFeedback} = require("../crudfiles/feedback.crud");
+const {getAllFeedbacks,createFeedback} = require("../crudfiles/feedback.crud");
 const router = express.Router()
 
-router.post('/feedbacks', async(req, res, next) => {
+router.post('/', async(req, res, next) => {
     try{
-        const result = await createNewFeedback(req);
+        const result = await createFeedback(req);
         
         if(result.status === "success"){
             return res.status(201).json(result)
@@ -25,7 +25,7 @@ router.post('/feedbacks', async(req, res, next) => {
 
 //get all feedbacks
 
-router.get('/feedbacks',async(req,res,next) => {
+router.get('/',async(req,res,next) => {
     try {
         const result = await getAllFeedbacks(req);
         

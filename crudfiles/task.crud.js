@@ -1,11 +1,12 @@
-const task = require ("../model/customer")
+const Task = require ("../model/task")
 //const uuid = require('uuid');
 
 async function createNewTask(req){
     try{
-        const newTask = await task.create({
+        const newTask = await Task.create({
             taskType:req.body.taskType,
-            taskCompleted:req.body.taskCompleted
+            taskCompleted:req.body.taskCompleted,
+            driver:req.body.driver
             
         });
         if(newTask === null){
@@ -33,10 +34,10 @@ async function createNewTask(req){
 
 //get all task completed 
 async function getAllTasks(){
-    const result = await task.find()
+    const result = await Task.find().populate({path:'driver',select:['firstName', 'lastName']})
 
     return{
-        status: "sucess",
+        status: "success",
         message: "successfully retrieved Task",
         results: result.length,
         data: result
@@ -48,7 +49,7 @@ async function getTaskDetails(req){
     const id = req.params.id;
     
     try{
-        const result = await task.findOne({_id: id})
+        const result = await Task.findOne({_id: id}).populate({path:'driver',select:['firstName', 'lastName']})
         if(result===null){
             return{
                 status:"failed" , 

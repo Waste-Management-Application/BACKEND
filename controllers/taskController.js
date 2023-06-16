@@ -8,7 +8,7 @@ const {getAllTasks,getTaskDetails,createNewTask} = require("../crudfiles/task.cr
 const router = express.Router()
 
 
-router.post('/task', async(req, res, next) => {
+router.post('/', async(req, res, next) => {
     try{
         const result = await createNewTask(req);
         
@@ -22,8 +22,8 @@ router.post('/task', async(req, res, next) => {
     
 })
 
-
-router.get('/task',async(req,res,next) => {
+//get all tasks completed
+router.get('/',async(req,res,next) => {
     try {
         const result = await getAllTasks(req);
         
@@ -37,8 +37,8 @@ router.get('/task',async(req,res,next) => {
     }
 })
 
-
-router.get("/task/:TaskID",async(req,res,next) =>{
+//get task by id
+router.get("/:id",async(req,res,next) =>{
     try {
         const id = req.params.id;
             const result = await getTaskDetails(req);

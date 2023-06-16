@@ -1,14 +1,14 @@
-const Users = require ('../model/vehicle');
+//const Users = require ('../model/vehicle');
 const express = require('express');
 
-const CatchAsync = require("../utils/CatchAsync");
-const AppError = require("../utils/apperror");
+//const CatchAsync = require("../utils/CatchAsync");
+//const AppError = require("../utils/apperror");
 
-const { getAllVehicles,deleteVehicleByID,createNewVehicle,getVehicleDetails} = require("../crudfiles/vehicle.crud");
+const { getAllVehicles,createNewVehicle} = require("../crudfiles/vehicle.crud");
 const router = express.Router()
 
 // create new vehicle
-router.post('/vehicle', async(req, res, next) => {
+router.post('/', async(req, res, next) => {
     try{
         const result = await createNewVehicle(req);
         
@@ -24,7 +24,7 @@ router.post('/vehicle', async(req, res, next) => {
 
 //get all vehicles
 
-router.get('/vehicle',async(req,res,next) => {
+router.get('/',async(req,res,next) => {
     try {
         const result = await getAllVehicles(req);
         
@@ -38,33 +38,33 @@ router.get('/vehicle',async(req,res,next) => {
     }
 })
 
-// get vehicle details
-router.get("/vehicle/:VehicleID",async(req,res,next) =>{
-    try {
-            const result = await getVehicleDetails(req);
-            if(result.status === "success"){
-                res.status(200).json(result)
-            }
-            res.status(400).json(result)
-        }catch(error){
-            next(error);
-        }
-});
+// // get vehicle details
+// router.get("/vehicle/:VehicleID",async(req,res,next) =>{
+//     try {
+//             const result = await getVehicleDetails(req);
+//             if(result.status === "success"){
+//                 res.status(200).json(result)
+//             }
+//             res.status(400).json(result)
+//         }catch(error){
+//             next(error);
+//         }
+// });
 
-//delete vehicle by ID  
-router.delete("/vehicle/:VehicleID/deleteVehicle",async(rq,res,next)=>{
-    try{
-        const result = await deleteVehicleByID(req);
-    if(result.status === "success")
-    {
-        res.status(200).json(result)
-    }
-    res.status(400).json(result)
-}catch(error){
-    next(error);
-}
+// //delete vehicle by ID  
+// router.delete("/vehicle/:VehicleID/deleteVehicle",async(rq,res,next)=>{
+//     try{
+//         const result = await deleteVehicleByID(req);
+//     if(result.status === "success")
+//     {
+//         res.status(200).json(result)
+//     }
+//     res.status(400).json(result)
+// }catch(error){
+//     next(error);
+// }
 
-})
+// })
 
 module.exports = router;
 

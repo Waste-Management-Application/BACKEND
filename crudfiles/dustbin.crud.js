@@ -1,12 +1,13 @@
-const dustbin = require ("../model/dustbin")
+const Dustbin = require ("../model/dustbin")
+// const dustbinRequest = require("../model/dustbin")
 //const uuid = require('uuid');
 
 //Create a new dustbin
 async function createNewDustbin(req){
     try{
-        const newDustbin = await dustbin.create({
+        const newDustbin = await Dustbin.Dustbin.create({
             //location:req.body.location,
-            dustbinNo:req.body.dustbinNo
+            // field:'dustbinNo'
             //dustbinID: uuid()
         });
         if(newDustbin === null){
@@ -16,7 +17,7 @@ async function createNewDustbin(req){
             }
         }
         return {
-            status: "success!",
+            status: "success",
             message: "dustbin created successfully",
             data : newDustbin
         };
@@ -34,9 +35,11 @@ async function createNewDustbin(req){
 //NEW//Create new dustbin request
 async function createNewDustbinRequest(req){
     try{
-        const NewDustbinRequest = await dustbin.create({
+        const NewDustbinRequest = await Dustbin.dustbinRequest.create({
             
-            customer:req.body.customer
+            customer:req.body.customer,
+            // status:req.body.status
+
         
         });
         if(NewDustbinRequest === null){
@@ -46,10 +49,12 @@ async function createNewDustbinRequest(req){
             }
         }
         return {
-            status: "success!",
+            status: "success",
             message: "Request sent successfully",
             data : NewDustbinRequest
         };
+
+
         }
         catch(err){
             console.log(err)
@@ -61,73 +66,84 @@ async function createNewDustbinRequest(req){
 
 }
 
+// Get all customers who requested bins
+async function getAllDustbinRequest() {
+    const result = await Dustbin.dustbinRequest.find().populate({path:'customer', select:['firstName', 'lastName','Location']});
+    return {
+        status: "success",
+        message: "successfully retrieved all requests",
+        results : result.length,
+        data: result
+        }
+}
+
+
 
     //get all dustbins
 async function getAllDustbins(){
-    const result =await dustbin.find()
+    const result =await Dustbin.Dustbin.find()
 
     return{
-        status: "sucess",
+        status: "success",
         message: "successfully retrieved dustbins",
         results: result.length,
         data: result
     }
 }    
 
-// get dustbins by dustbinID
+// // get dustbins by dustbinID
 
-async function getDustbinDetails(req){
-    const id = req.params.id;
-    try{
-        const result = await dustbin.findOne({_id: id})
-        if(result===null){
-            return{
-                status:"failed" , 
-                message: "dustbin not found"
-            }
-        }
-        return {
-            status : "success",
-            message: "dustbin found",
-            data : result
-        }
-    }
-    catch(error){
-        return {status : "error" , 
-        message : "an error occured, please try again"}
-    }
-}
+// async function getDustbinDetails(req){
+//     const id = req.params.id;
+//     try{
+//         const result = await dustbin.findOne({_id: id})
+//         if(result===null){
+//             return{
+//                 status:"failed" , 
+//                 message: "dustbin not found"
+//             }
+//         }
+//         return {
+//             status : "success",
+//             message: "dustbin found",
+//             data : result
+//         }
+//     }
+//     catch(error){
+//         return {status : "error" , 
+//         message : "an error occured, please try again"}
+//     }
+// }
 
-async function deleteDustbinByID(){
-    const id = req.params.id;
-    try{
-        const result = await dustbin.deleteOne({_id: id})
-        if(result===null){
-            return{
-                status:"failed" , 
-                message: "dustbin not deleted"
-            }
-        }
-        return {
-            status : "success",
-            message: "dustbin deleted",
-            data : result
-        }
-    }
-    catch(error){
-        return {status : "error" , 
-        message : "an error occured, please try again"}
-    }
+// async function deleteDustbinByID(){
+//     const id = req.params.id;
+//     try{
+//         const result = await dustbin.deleteOne({_id: id})
+//         if(result===null){
+//             return{
+//                 status:"failed" , 
+//                 message: "dustbin not deleted"
+//             }
+//         }
+//         return {
+//             status : "success",
+//             message: "dustbin deleted",
+//             data : result
+//         }
+//     }
+//     catch(error){
+//         return {status : "error" , 
+//         message : "an error occured, please try again"}
+//     }
     
 
-} 
+//} 
 
 module.exports= {
     getAllDustbins,
-    getDustbinDetails,
     createNewDustbin,
-    deleteDustbinByID,
-    createNewDustbinRequest
+    createNewDustbinRequest,
+    getAllDustbinRequest
     
 }
 

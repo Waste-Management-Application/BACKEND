@@ -1,14 +1,17 @@
 const mongoose = require('mongoose')
+const autoIncrement = require('mongoose-auto-increment')
+
+autoIncrement.initialize(mongoose.connection);
+
+
+
 
 const dustbinSchema = new mongoose.Schema({
-      location: {
-        type: String,
-        required:false
-      },
-
+      
       dustbinNo:{
         type: Number,
-        required: true
+        //required: true,
+        unique:true
       },
 
       // dustbinID:{
@@ -26,18 +29,39 @@ const dustbinSchema = new mongoose.Schema({
 
 })
 
+
+
+
+// dustbinSchema.plugin(autoIncrement.plugin,{
+//   model: 'Dustbin',
+//   feild: 'dustbinNo',
+//   startAt: 1,
+//   incrementBy: 1, 
+// })
+
 const dustbinRequestSchema= new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Customer'
   },
-  requestDate: Date,
+
+  location: {
+    type: String,
+    required:false
+  },
+
+  requestDate: {
+    type:Date,
+    default:Date.now()
+  },
   status: {
     type:String, default:"pending"}
 });
 
 const Dustbin = mongoose.model("Dustbin",dustbinSchema)
-module.exports = Dustbin;
+
 
 const dustbinRequest = mongoose.model("dustbinRequest",dustbinRequestSchema )
-module.exports = dustbinRequest;
+module.exports = {
+  Dustbin, dustbinRequest
+}
