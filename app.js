@@ -17,6 +17,11 @@ const feedbackRouter = require("./controllers/feedbackController")
 app.use(express.json())
 app.use(morgan("dev"));
 
+app.use((req, res, next)=>{
+    req.requestTime = new Date().toISOString();
+    next();
+});
+
 
 app.use("/api/BinBuddy",[ UsersRouter, DustbinRouter,taskRouter,vehicleRouter,feedbackRouter]);
 // app.

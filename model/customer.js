@@ -55,6 +55,7 @@ const customerSchema = new mongoose.Schema({
 	passwordResetToken : String,
 	passwordResetExpires: Date,
     
+    
     DateRegistered: {
         type:Date,
         default: Date.now()
@@ -73,9 +74,13 @@ customerSchema.pre('save', async function(next){
 	this.password = await bcrypt.hash(this.password, 12);
 
 	// removes passwordConfirm field from the document
-	this.passwordConfirm = undefined
-	next()
+	this.confirmPassword = undefined
+	next();
 })
+
+customerSchema.methods.correctPassword = async function(candidatePassword, userPassword){
+	return await bcrypt.compare(candidatePassword, userPassword)
+}
 
 const Customer = mongoose.model("Customer",customerSchema);
 module.exports = Customer;  

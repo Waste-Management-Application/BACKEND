@@ -1,9 +1,17 @@
 const customerController = require("../controllers/customerController")
 const driverController = require("../controllers/driverController")
+const AuthController = require('../controllers/AuthController')
+//const Customers = require ('../model/customer')
+//const Driver = require ('../model/driver')
+
 const express = require('express')
 
 
 const router = express.Router()
+
+router.post("/customerSingUp", AuthController.customerSignUp)
+router.post("/driverSingUp", AuthController.driverSignUp)
+router.post("/customerSignIn", AuthController.customerSignIn)
 
 router
       .route("/customers/")

@@ -1,11 +1,11 @@
-const Customers = require ('../model/customer')
+const Customer = require ('../model/customer')
 
 const CatchAsync = require("../utils/CatchAsync");
 const AppError = require("../utils/apperror");
 
 //create a new customer
 exports.createCustomer = CatchAsync(async(req, res, next) =>{
-    const newCustomer = await Customers.create(req.body);
+    const newCustomer = await Customer.create(req.body);
 
     res.status(202).json({
         status:"success",
@@ -17,7 +17,7 @@ exports.createCustomer = CatchAsync(async(req, res, next) =>{
 
 //get all customers from database
 exports.getAllCustomers = CatchAsync(async(req, res, next) =>{
-    const customers   = await Customers.find()
+    const customers   = await Customer.find()
     
     res.status(200).json({
         status: "success",
@@ -31,7 +31,7 @@ exports.getAllCustomers = CatchAsync(async(req, res, next) =>{
 //find a specific customer
 exports.getCustomerById = CatchAsync(async(req, res, next) =>{
     const id = req.params.id;
-    const customer = await Customers.findOne({_id: id});
+    const customer = await Customer.findOne({_id: id});
 
     if(!customer){
         return next(new AppError('No customer with such an id', 401));
@@ -50,7 +50,7 @@ exports.getCustomerById = CatchAsync(async(req, res, next) =>{
 
 //TODO:::Search Customers
 exports.getCustomer = CatchAsync(async(req, res, next) =>{
-    const customer = await Customers.findOne({lastName: req.params.lastName})
+    const customer = await Customer.findOne({lastName: req.params.lastName})
 
     if(!customer){
         return next(new AppError('No customer with such an id', 401));
@@ -67,7 +67,7 @@ exports.getCustomer = CatchAsync(async(req, res, next) =>{
 //update a customer details
 exports.updateCustomer = CatchAsync(async(req, res, next) =>{
     const id = req.params.id;
-    const user = await Customers.findOneAndUpdate({_id: id}, req.body, {
+    const user = await Customer.findOneAndUpdate({_id: id}, req.body, {
         new: true,
         runValidators: true
     })
@@ -88,7 +88,7 @@ exports.updateCustomer = CatchAsync(async(req, res, next) =>{
 //delete customer account
 exports.deleteCustomerAccount = CatchAsync(async(req, res, next) => {
 	const id = req.params.id;
-	const customer = await Customers.findOneAndDelete({_id: id})
+	const customer = await Customer.findOneAndDelete({_id: id})
 	if(!customer){
 		return next(new AppError('No customer with such an id', 401));
 	}
