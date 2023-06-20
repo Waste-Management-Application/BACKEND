@@ -18,7 +18,7 @@ async function createFeedback (req) {
             }
         }
         return {
-            status: "success!",
+            status: "success",
             message: "feedback sent successfully",
             data : feedback
         };

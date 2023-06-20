@@ -1,8 +1,13 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const bcrypt = require('bcryptjs')
+// const bcrypt = require('bcryptjs')
 
 const DriverSchema = new mongoose.Schema({
+    role:{
+        type:String,
+        default:'Driver'
+    },
+    
     firstName:{
         type:String,
         required:[true, 'FirstName is required'],
@@ -32,6 +37,10 @@ const DriverSchema = new mongoose.Schema({
     gender:{
         type:String,
         required:true
+    },
+    hashedPassword : {
+        type: String,
+        required:true,
     },
 
 

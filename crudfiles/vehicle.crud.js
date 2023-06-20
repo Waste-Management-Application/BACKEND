@@ -16,7 +16,7 @@ async function createNewVehicle(req){
             }
         }
         return {
-            status: "success!",
+            status: "success",
             message: "vehicle created successfully",
             data : newVehicle
         };

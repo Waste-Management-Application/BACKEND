@@ -1,5 +1,6 @@
 //const Users = require ('../model/dustbin')
 const express = require('express')
+const AuthController = require('../controllers/AuthController')
 
 
 //const CatchAsync = require("../utils/CatchAsync");
@@ -9,7 +10,7 @@ const {getAllDustbins,createNewDustbin,createNewDustbinRequest,getAllDustbinRequ
 const router = express.Router()
 
 // create new dustbin
-router.post('/', async(req, res, next) => {
+router.post('/',AuthController.protect, async(req, res, next) => {
     try{
         const result = await createNewDustbin(req);
         
@@ -26,7 +27,7 @@ router.post('/', async(req, res, next) => {
 
 //create a new dustbin request
 
-router.post('/dustbinRequest',async(req,res,next)=>{
+router.post('/dustbinRequest',AuthController.protect, AuthController.restrictTo(['Customer']),async(req,res,next)=>{
     try{
         const result = await createNewDustbinRequest(req);
         
@@ -40,7 +41,7 @@ router.post('/dustbinRequest',async(req,res,next)=>{
     
 })
 // get all dustbin request with customer details
-router.get('/dustbinRequest',async(req,res,next) => {
+router.get('/dustbinRequest',AuthController.protect,async(req,res,next) => {
     try {
         const result = await getAllDustbinRequest(req);
         
@@ -59,7 +60,7 @@ router.get('/dustbinRequest',async(req,res,next) => {
 
 //get all dustbins
 
-router.get('/',async(req,res,next) => {
+router.get('/',AuthController.protect,async(req,res,next) => {
     try {
         const result = await getAllDustbins(req);
         

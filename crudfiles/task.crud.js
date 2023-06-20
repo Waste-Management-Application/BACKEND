@@ -16,7 +16,7 @@ async function createNewTask(req){
             }
         }
         return {
-            status: "success!",
+            status: "success",
             message: "task successfully created",
             data : newTask
         };

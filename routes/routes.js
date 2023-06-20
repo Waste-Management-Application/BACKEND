@@ -12,6 +12,7 @@ const router = express.Router()
 router.post("/customerSingUp", AuthController.customerSignUp)
 router.post("/driverSingUp", AuthController.driverSignUp)
 router.post("/customerSignIn", AuthController.customerSignIn)
+router.post("/driverSignIn", AuthController.driverSignIn)
 
 router
       .route("/customers/")

@@ -1,16 +1,16 @@
-const Users = require ('../model/feedback')
+//const Users = require ('../model/feedback')
 const express = require('express')
 
 const AuthController = require('../controllers/AuthController')
 
-const CatchAsync = require("../utils/CatchAsync");
-const AppError = require("../utils/apperror");
+//const CatchAsync = require("../utils/CatchAsync");
+//const AppError = require("../utils/apperror");
 
 const {getAllFeedbacks,createFeedback} = require("../crudfiles/feedback.crud");
 const router = express.Router()
 
 //send a Feedback
-router.post('/', async(req, res, next) => {
+router.post('/',AuthController.protect, async(req, res, next) => {
     try{
         const result = await createFeedback(req);
         
@@ -28,7 +28,7 @@ router.post('/', async(req, res, next) => {
 
 //get all feedbacks
 
-router.get('/',AuthController.protect,async(req,res,next) => {
+router.get('/',async(req,res,next) => {
     try {
         const result = await getAllFeedbacks(req);
         

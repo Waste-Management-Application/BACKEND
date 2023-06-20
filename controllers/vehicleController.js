@@ -1,5 +1,6 @@
 //const Users = require ('../model/vehicle');
 const express = require('express');
+const AuthController = require('../controllers/AuthController')
 
 //const CatchAsync = require("../utils/CatchAsync");
 //const AppError = require("../utils/apperror");
@@ -8,7 +9,7 @@ const { getAllVehicles,createNewVehicle} = require("../crudfiles/vehicle.crud");
 const router = express.Router()
 
 // create new vehicle
-router.post('/', async(req, res, next) => {
+router.post('/',AuthController.protect, async(req, res, next) => {
     try{
         const result = await createNewVehicle(req);
         
@@ -24,7 +25,7 @@ router.post('/', async(req, res, next) => {
 
 //get all vehicles
 
-router.get('/',async(req,res,next) => {
+router.get('/',AuthController.protect,async(req,res,next) => {
     try {
         const result = await getAllVehicles(req);
         

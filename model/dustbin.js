@@ -32,12 +32,12 @@ const dustbinSchema = new mongoose.Schema({
 
 
 
-// dustbinSchema.plugin(autoIncrement.plugin,{
-//   model: 'Dustbin',
-//   feild: 'dustbinNo',
-//   startAt: 1,
-//   incrementBy: 1, 
-// })
+dustbinSchema.plugin(autoIncrement.plugin,{
+  model: 'Dustbin',
+  feild: 'dustbinNo',
+  startAt: 1,
+  incrementBy: 1, 
+})
 
 const dustbinRequestSchema= new mongoose.Schema({
   customer: {

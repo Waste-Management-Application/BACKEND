@@ -1,14 +1,16 @@
-const Users = require ('../model/task')
+//const Users = require ('../model/task')
 const express= require('express')
 
-const CatchAsync = require("../utils/CatchAsync");
-const AppError = require("../utils/apperror");
+const AuthController = require('../controllers/AuthController')
+
+//const CatchAsync = require("../utils/CatchAsync");
+//const AppError = require("../utils/apperror");
 
 const {getAllTasks,getTaskDetails,createNewTask} = require("../crudfiles/task.crud");
 const router = express.Router()
 
 
-router.post('/', async(req, res, next) => {
+router.post('/',AuthController.protect, async(req, res, next) => {
     try{
         const result = await createNewTask(req);
         
@@ -23,7 +25,7 @@ router.post('/', async(req, res, next) => {
 })
 
 //get all tasks completed
-router.get('/',async(req,res,next) => {
+router.get('/',AuthController.protect,async(req,res,next) => {
     try {
         const result = await getAllTasks(req);
         
@@ -38,7 +40,7 @@ router.get('/',async(req,res,next) => {
 })
 
 //get task by id
-router.get("/:id",async(req,res,next) =>{
+router.get("/:id",AuthController.protect,async(req,res,next) =>{
     try {
         const id = req.params.id;
             const result = await getTaskDetails(req);

@@ -3,6 +3,11 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 
 const customerSchema = new mongoose.Schema({
+    role:{
+        type:String,
+        default:'Customer'
+    },
+    
     firstName:{
         type:String,
         required:[true, 'FirstName is required'],
@@ -81,6 +86,35 @@ customerSchema.pre('save', async function(next){
 customerSchema.methods.correctPassword = async function(candidatePassword, userPassword){
 	return await bcrypt.compare(candidatePassword, userPassword)
 }
+
+customerSchema.methods.passwordChangedAfter = function(JWTTimeStamp){
+	if(this.passwordChangedAt){
+		const changedTimeStamp = parseInt(this.passwordChangedAt.getTime()/1000,10);
+
+		//console.log(changedTimeStamp, JWTTimeStamp);
+		// returns true if password has been changed
+		return JWTTimeStamp < changedTimeStamp
+	}
+
+	// password not changed	
+	return false
+}
+
+customerSchema.methods.createPasswordResetToken = function(){
+	const resetToken = crypto.randomBytes(32).toString('hex')
+
+	this.passwordResetToken = crypto
+								.createHash('sha256')
+								.update(resetToken)
+								.digest('hex')
+
+	this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+	//console.log({resetToken}, this.passwordResetToken)
+
+	return resetToken;
+}
+
 
 const Customer = mongoose.model("Customer",customerSchema);
 module.exports = Customer;  
