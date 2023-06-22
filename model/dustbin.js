@@ -43,6 +43,7 @@ const dustbinRequestSchema= new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Customer'
+    
   },
 
   location: {
