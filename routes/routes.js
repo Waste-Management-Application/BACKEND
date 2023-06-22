@@ -34,6 +34,8 @@ router.route("/customers/:id")
     .get(customerController.getCustomerById)
     .patch(customerController.updateCustomer)
     .delete(customerController.deleteCustomerAccount)
+    .delete(AuthController.deactivateCustomerAcc)
+    
     
 router
     .route("/drivers/")    
@@ -51,6 +53,7 @@ router.route("/drivers/:id")
     .get(driverController.getDriverByID)
     .patch(driverController.updateDriver)
     .delete(driverController.deleteDriverAccount)
+    .delete(AuthController.deactivateDriverAcc)
     
 
 

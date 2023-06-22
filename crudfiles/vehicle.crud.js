@@ -5,7 +5,7 @@ async function createNewVehicle(req){
     try{
         const newVehicle = await Vehicle.create({
             //location:req.body.location,
-            vehicleNo:req.body.vehicleNo,
+            // vehicleNo:req.body.vehicleNo,
             driver:req.body.driver
             //vehicleID: uuid()
         });
@@ -25,7 +25,7 @@ async function createNewVehicle(req){
             console.log(err)
             return{
                 status: "error",
-                message: "An error occured, please try again later",
+                message: "Driver ID required",
             };
         }
 
@@ -33,7 +33,7 @@ async function createNewVehicle(req){
 
     //get all vehicles
 async function getAllVehicles(){
-    const result =await Vehicle.find().populate('driver','name')
+    const result = await Vehicle.find().populate({path:'driver', select:['firstName','lastName']})
 
     return{
         status: "success",

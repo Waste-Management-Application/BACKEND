@@ -34,7 +34,7 @@ const dustbinSchema = new mongoose.Schema({
 
 dustbinSchema.plugin(autoIncrement.plugin,{
   model: 'Dustbin',
-  feild: 'dustbinNo',
+  field: 'dustbinNo',
   startAt: 1,
   incrementBy: 1, 
 })

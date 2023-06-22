@@ -47,24 +47,14 @@ const DriverSchema = new mongoose.Schema({
     DateRegistered: {
         type:Date,
         default: Date.now()
-    }
-    // password:{
-    //     type:String,
-    //     required:[true, 'Password is required'],
-    //     minlenght: 8,
-    //     select: false
-    // },
-    // confirmPassword:{
-    //     type:String,
-    //     required:[true, 'Confirm password'],
-    //     validator: {
-    //         validator : function(el){
-    //             return el === this.password;
-    //         },
-    //         message: 'password mismatch'
-    //     }
+    },
 
-    // }
+    isActive:{
+        type: Boolean,
+        default: true,
+        select: false
+    }
+    
 
 })
 

@@ -61,6 +61,12 @@ const customerSchema = new mongoose.Schema({
     passwordChangedAt : Date,
 	passwordResetToken : String,
 	passwordResetExpires: Date,
+
+    isActive:{
+        type: Boolean,
+        default: true,
+        select: false
+    },
     
     
     DateRegistered: {
@@ -85,7 +91,7 @@ customerSchema.pre('save', async function(next){
 	next();
 })
 
-userSchema.pre('save', function(next){
+customerSchema.pre('save', function(next){
 	if(!this.isModified('password') || this.isNew) return next();
 
 	this.passwordChangedAt = Date.now() - 1000;

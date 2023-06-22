@@ -25,7 +25,7 @@ router.post('/',AuthController.protect, async(req, res, next) => {
 
 //get all vehicles
 
-router.get('/',AuthController.protect,async(req,res,next) => {
+router.get('/',AuthController.protect, async(req,res,next) => {
     try {
         const result = await getAllVehicles(req);
         

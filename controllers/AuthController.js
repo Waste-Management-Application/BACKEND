@@ -106,7 +106,7 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
         //     return next(new AppError('Account is not active', 400))
         // }
 
-        SendToken(newUser, res, 201, 'Customer login successful')
+        SendToken(newUser, res, 200, 'Customer login successful')
 
     })
 
@@ -132,7 +132,7 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
         }
       
         // Generate and send the authentication token
-        SendToken(newUser, res, 201, 'Driver login successful')
+        SendToken(newUser, res, 200, 'Driver login successful')
 
       });
       
@@ -255,5 +255,23 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
     SendToken(user, res, 200)
 });
 
+// delete Customer Account 
+exports.deactivateCustomerAcc = CatchAsync( async (req, res, next)=>{
+    const user = await Customer.findOneAndUpdate(req.user.id, {isActive : false}, {
+        new: true,
+        runValidators: true
+    })
+
+    SendToken(user, res, 204);
+})
+// delete Driver Account 
+exports.deactivateDriverAcc = CatchAsync( async (req, res, next)=>{
+    const user = await Driver.findOneAndUpdate(req.user.id, {isActive : false}, {
+        new: true,
+        runValidators: true
+    })
+
+    SendToken(user, res, 204);
+})
 
 
