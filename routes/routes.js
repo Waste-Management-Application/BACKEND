@@ -8,16 +8,21 @@ const express = require('express')
 
 
 const router = express.Router()
-
+//Customer SignUp route
 router.post("/customerSingUp", AuthController.customerSignUp)
 router.post("/driverSingUp", AuthController.driverSignUp)
+//Driver SignUp route
 router.post("/customerSignIn", AuthController.customerSignIn)
 router.post("/driverSignIn", AuthController.driverSignIn)
+//ForgotPassword and ResetPassword 
+router.post("/forgotPassword", AuthController.forgotPassword)
+router.patch("/resetPassword/:token", AuthController.resetPassword)
 
 router
       .route("/customers/")
       .get(customerController.getAllCustomers)
       .post(customerController.createCustomer)
+      
 
 
 // router
