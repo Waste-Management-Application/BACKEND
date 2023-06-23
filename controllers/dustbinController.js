@@ -74,33 +74,7 @@ router.get('/',AuthController.protect,async(req,res,next) => {
     }
 })
 
-// // get dustbin details
-// router.get("/dustbin/:DustbinID",async(req,res,next) =>{
-//     try {
-//             const result = await getDustbinDetails(req);
-//             if(result.status === "success"){
-//                 res.status(200).json(result)
-//             }
-//             res.status(400).json(result)
-//         }catch(error){
-//             next(error);
-//         }
-// });
 
-// // //delete dustbin by ID  
-// // router.delete("/dustbin/:DustbinID/deleteDustbin",async(rq,res,next)=>{
-//     try{
-//         const result = await deleteDustbinByID(req);
-//     if(result.status === "success")
-//     {
-//         res.status(200).json(result)
-//     }
-//     res.status(400).json(result)
-// }catch(error){
-//     next(error);
-// }
-
-// })
 
 
 module.exports = router;

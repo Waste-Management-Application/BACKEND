@@ -42,8 +42,9 @@ dustbinSchema.plugin(autoIncrement.plugin,{
 const dustbinRequestSchema= new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Customer'
-    
+    ref: 'Customer',
+    required: true
+
   },
 
   location: {

@@ -25,7 +25,7 @@ async function createNewTask(req){
             console.log(err)
             return{
                 status: "error",
-                message: "An error occured, please try again later",
+                message: "Driver ID required",
             };
         }
 

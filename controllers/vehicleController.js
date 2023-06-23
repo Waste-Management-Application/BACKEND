@@ -5,7 +5,7 @@ const AuthController = require('../controllers/AuthController')
 //const CatchAsync = require("../utils/CatchAsync");
 //const AppError = require("../utils/apperror");
 
-const { getAllVehicles,createNewVehicle} = require("../crudfiles/vehicle.crud");
+const { getAllVehicles,createNewVehicle, updateVehicle} = require("../crudfiles/vehicle.crud");
 const router = express.Router()
 
 // create new vehicle
@@ -39,33 +39,19 @@ router.get('/',AuthController.protect, async(req,res,next) => {
     }
 })
 
-// // get vehicle details
-// router.get("/vehicle/:VehicleID",async(req,res,next) =>{
-//     try {
-//             const result = await getVehicleDetails(req);
-//             if(result.status === "success"){
-//                 res.status(200).json(result)
-//             }
-//             res.status(400).json(result)
-//         }catch(error){
-//             next(error);
-//         }
-// });
-
-// //delete vehicle by ID  
-// router.delete("/vehicle/:VehicleID/deleteVehicle",async(rq,res,next)=>{
+// router.patch('/:id',AuthController.protect, async(req,res,next)=>{
 //     try{
-//         const result = await deleteVehicleByID(req);
-//     if(result.status === "success")
-//     {
-//         res.status(200).json(result)
+//         const result = await updateVehicle(req);
+//         if (result.status==="success"){
+//             return res.status(200).json(result);
+//         }
+//         return res.status(400).json(result);
 //     }
-//     res.status(400).json(result)
-// }catch(error){
-//     next(error);
-// }
+//     catch(error){
+//         next(error);
+//     }
 
-// })
+
 
 module.exports = router;
 

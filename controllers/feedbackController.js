@@ -10,7 +10,7 @@ const {getAllFeedbacks,createFeedback} = require("../crudfiles/feedback.crud");
 const router = express.Router()
 
 //send a Feedback
-router.post('/',AuthController.protect, async(req, res, next) => {
+router.post('/',AuthController.protect, AuthController.restrictTo(['Customer']), async(req, res, next) => {
     try{
         const result = await createFeedback(req);
         

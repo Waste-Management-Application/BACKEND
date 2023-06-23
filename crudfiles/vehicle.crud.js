@@ -43,57 +43,43 @@ async function getAllVehicles(){
     }
 }    
 
-// // get vehicle by vehicleID
-
-// async function getVehicleDetails(req){
-//     const id = req.params.id
-//     try{
-//         const result = await Vehicle.findOne({_id: id})
-//         if(result===null){
-//             return{
-//                 status:"failed" , 
-//                 message: "vehicle not found"
-//             }
-//         }
+// async function updateVehicle(req) {
+//     try {
+//       const { vehicleId, driverId } = req.body;
+  
+//       // Find the vehicle by ID and update the driver reference
+//       const updatedVehicle = await Vehicle.findByIdAndUpdate(
+//         vehicleId,
+//         { driver: driverId },
+//         { new: true }
+//       ).populate('driver');
+  
+//       if (!updatedVehicle) {
 //         return {
-//             status : "success",
-//             message: "vehicle found",
-//             data : result
-//         }
+//           status: 'failed',
+//           message: 'Vehicle not found',
+//         };
+//       }
+  
+//       return {
+//         status: 'success',
+//         message: 'Vehicle updated successfully',
+//         data: updatedVehicle,
+//       };
+//     } catch (err) {
+//       console.log(err);
+//       return {
+//         status: 'error',
+//         message: 'Failed to update vehicle',
+//       };
 //     }
-//     catch(error){
-//         return {status : "error" , 
-//         message : "an error occured, please try again"}
-//     }
-// }
-
-// async function deleteVehicleByID(){
-//     const id = req.params.id
-//     try{
-//         const result = await Vehicle.deleteOne({_id: id})
-//         if(result===null){
-//             return{
-//                 status:"failed" , 
-//                 message: "vehicle not deleted"
-//             }
-//         }
-//         return {
-//             status : "success",
-//             message: "vehicle deleted",
-//             data : result
-//         }
-//     }
-//     catch(error){
-//         return {status : "error" , 
-//         message : "an error occured, please try again"}
-//     }
-    
-
-// } 
+//   }
+  
 
 module.exports= {
    getAllVehicles,
-   createNewVehicle
+   createNewVehicle,
+//    updateVehicle
 }
 
 

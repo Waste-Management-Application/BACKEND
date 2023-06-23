@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const taskSchema = new mongoose.Schema({
     driver:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'Driver'
+        ref: 'Driver',
+        required: true
     },
 
     // taskDescription:{

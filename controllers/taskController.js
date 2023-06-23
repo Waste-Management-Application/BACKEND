@@ -10,7 +10,7 @@ const {getAllTasks,getTaskDetails,createNewTask} = require("../crudfiles/task.cr
 const router = express.Router()
 
 
-router.post('/',AuthController.protect, async(req, res, next) => {
+router.post('/',AuthController.protect,AuthController.restrictTo(['Driver']), async(req, res, next) => {
     try{
         const result = await createNewTask(req);
         
