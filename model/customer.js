@@ -19,10 +19,19 @@ const customerSchema = new mongoose.Schema({
         required:[true, 'LastName is required'],
         trim:true
     },
-    Location:{
-        type:String,
-        required:[true, 'Location is required']
-    },
+
+    location: {
+        type: {
+          type: String,
+          enum: ['Point'], // Only allow 'Point' as the type
+          required: true
+        },
+        coordinates: {
+          type: [Number], // Array of two numbers: [longitude, latitude]
+          required: true,
+        },
+        digitalAddress: String
+      },
 
     contact:{
         type:String,
@@ -78,6 +87,8 @@ const customerSchema = new mongoose.Schema({
 
 
 })
+
+customerSchema.index({ location: '2dsphere' });
 
 customerSchema.pre('save', async function(next){
 	// checks if password is not modified

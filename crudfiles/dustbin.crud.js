@@ -60,7 +60,7 @@ async function createNewDustbinRequest(req){
             console.log(err)
             return{
                 status: "error",
-                message: "Customer ID required",
+                message: "An error occured, please try again later",
             };
         }
 

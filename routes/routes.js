@@ -9,8 +9,8 @@ const express = require('express')
 
 const router = express.Router()
 //Customer SignUp route
-router.post("/customerSingUp", AuthController.customerSignUp)
-router.post("/driverSingUp", AuthController.driverSignUp)
+router.post("/customerSignUp", AuthController.customerSignUp)
+router.post("/driverSignUp", AuthController.driverSignUp)
 //Driver SignUp route
 router.post("/customerSignIn", AuthController.customerSignIn)
 router.post("/driverSignIn", AuthController.driverSignIn)
@@ -22,6 +22,9 @@ router
       .route("/customers/")
       .get(customerController.getAllCustomers)
       .post(customerController.createCustomer)
+
+// router.route("/UpdateCustomerLocation/:id")
+//       .patch(AuthController.protect, customerController.updateCustomerLocation)        
       
 
 
@@ -41,6 +44,9 @@ router
     .route("/drivers/")    
     .get(driverController.getAllDrivers)
     .post(driverController.createDriver)
+
+router.route("/UpdateDriverLocation")
+      .post(AuthController.protect,driverController.updateDriverLocation)    
 
 
 

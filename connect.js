@@ -1,5 +1,9 @@
 const dotenv = require('dotenv');
+
+
 const mongoose = require('mongoose');
+
+
 
 const app = require("./app");
 
@@ -23,8 +27,11 @@ mongoose
 const port = 4000;
 
 const connect = app.listen(port, () =>{
-    console.log(`listening on ${port}`)
+	console.log(`listening on ${port}`)
 })
+
+
+
 
 // process.on('unhandledRejection', err=>{
 // 	console.log(err.name, err.message)

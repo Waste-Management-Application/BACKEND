@@ -25,7 +25,7 @@ async function createNewVehicle(req){
             console.log(err)
             return{
                 status: "error",
-                message: "Driver ID required",
+                message: "An error occured, please try again later",
             };
         }
 

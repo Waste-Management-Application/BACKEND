@@ -1,16 +1,44 @@
 const Driver = require ('../model/driver')
+const sendEmail = require("../utils/email");
+const bcrypt = require('bcryptjs');
+
+const randomstring = require('randomstring');
 
 const CatchAsync = require("../utils/CatchAsync");
-const AppError = require("../utils/apperror")
+const AppError = require("../utils/apperror");
 
 //create a new Driver
 exports.createDriver = CatchAsync(async(req, res, next) =>{
-    const newDriver = await Driver.create(req.body);
-
+     // Generate a random password for driver which is of 8 characters
+     const password = randomstring.generate(8);
+     //hash the generated password
+     const hashedPassword =    await (bcrypt.hash(password, 10));
+ 
+     const newUser = await Driver.create({
+         firstName:req.body.firstName, 
+         lastName:req.body.lastName,
+         email:req.body.email,
+         location:req.body.location, 
+         contact:req.body.contact, 
+         gender:req.body.gender,
+         role:"Driver",
+         hashedPassword: hashedPassword
+     })
+ 
+     const message = `A new driver account has been created by ${newUser.firstName} ${newUser.lastName}.\n\nEmail: ${newUser.email}. \nPassword: ${password}`
+ 
+     await sendEmail({
+         email:newUser.email,
+         subject: 'Driver Account Created',
+         message 
+ 
+     })
+ 
     res.status(202).json({
         status:"success",
+        message:"Check your email for  Login Password",
         data : {
-            newDriver
+            newUser
         }
     })
 })
@@ -37,7 +65,7 @@ exports.getDriver = CatchAsync(async(req, res, next) =>{
         return next(new AppError('Last name matches no driver', 401));
     }
 
-    res.statu(200).json({
+    res.status(200).json({
         status : "success",
         data:{
             driver
@@ -54,7 +82,7 @@ exports.getDriverByID = CatchAsync(async(req, res, next) =>{
         return next(new AppError('ID matches no driver', 401));
     }
 
-    res.statu(200).json({
+    res.status(200).json({
         status : "success",
         data:{
             driver
@@ -96,6 +124,38 @@ exports.deleteDriverAccount = CatchAsync (async(req, res, next) => {
 	
 	}
 )
+
+//Update driver location continiously
+exports.updateDriverLocation = CatchAsync(async(req, res, next) => {
+
+    const longitude = Number(req.body.location.coordinates[0]);
+    const latitude = Number(req.body.location.coordinates[1]);
+
+    // Find the user by ID
+    const user = await Driver.findById( id = req.body.id);
+
+    if (!user) {
+        return next(new AppError('User not found', 404));
+    }
+
+    // Update the location
+    user.location = {
+        type: 'Point',
+        coordinates: [longitude, latitude]
+    };
+
+    // Save the updated user
+    await user.save();
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Location updated successfully',
+        data: user
+    });
+});
+
+
+
 
 
 

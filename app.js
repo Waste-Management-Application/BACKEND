@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require("morgan");
-const app = express()
+
+const app = express();
 
 const globalErrorHandler = require('./controllers/errorController')
 const AppError = require('./utils/apperror')
@@ -27,38 +28,32 @@ app.use((req, res, next)=>{
 });
 
 
-// handling unhandled routes
-
 
 
 app.use("/api/BinBuddy",[ UsersRouter, DustbinRouter,taskRouter,vehicleRouter,feedbackRouter]);
 
 
 
-
+// handling unhandled routes
 app.all("*", (req, res, next)=>{
     next(new AppError(`Can't find ${req.originalUrl} on the server`, 404))
 })
-// app.
-// app.get('/',(req, res) => {
-//     res.render('login ')
-// })
-
-// app.get('/signup',(req, res) => {
-//     res.render('signup')
-// })
-
-// app.post("/signup",async (req,res)=>{
-    
-//     const data={
-//         name:req.body.name,
-//         password:req.body.password
-//     }
-
-// })
 
 //handling global errors
+
 app.use(globalErrorHandler)
 
+
+
+
 module.exports = app;
+
+
+
+
+
+
+
+
+
 

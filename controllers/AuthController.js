@@ -43,7 +43,7 @@ exports.customerSignUp = CatchAsync(async(req,res,next)=> {
         lastName:req.body.lastName,
         email:req.body.email, 
         contact:req.body.contact, 
-        Location:req.body.Location,
+        location:req.body.location,
         gender:req.body.gender,
         password:req.body.password,
         confirmPassword:req.body.confirmPassword,
@@ -66,7 +66,8 @@ exports.driverSignUp = CatchAsync(async(req,res,next)=> {
     const newUser = await Driver.create({
         firstName:req.body.firstName, 
         lastName:req.body.lastName,
-        email:req.body.email, 
+        email:req.body.email,
+        location:req.body.location, 
         contact:req.body.contact, 
         gender:req.body.gender,
         role:"Driver",
