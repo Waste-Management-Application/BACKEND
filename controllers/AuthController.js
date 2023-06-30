@@ -248,7 +248,7 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
         }
     }
 
-    //forgot password controller
+    //forgot password controller for Customer
     exports.forgotPassword = CatchAsync(async(req,res,next) =>{
         //get user based on posted email
         const user = await Customer.findOne({email:req.body.email})
@@ -281,7 +281,41 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
         }
     })
 
-    //Reset password controller
+
+    //forgot password controller for admin
+    exports.forgotAdminPassword = CatchAsync(async(req,res,next) =>{
+        //get user based on posted email
+        const user = await Admin.findOne({email:req.body.email})
+        if(!user){
+            return next(new AppError('There is no user with email this address',404))
+        }
+        //generate the random rese token
+        const resetToken = user.createPasswordResetToken();
+        await user.save({validateBeforeSave : false});
+        //send it to user email
+        const resetURL = `${req.protocol}://${req.get('host')}/api/Binbuddy/resetPassword/${resetToken}`;
+        try{
+            await sendEmail({
+                email: user.email,
+                subject : 'Your password reset token (valid for 10min)',
+                message : `Forgot your password?\nSubmit a patch with your new password and confirmPassword to:\n ${resetURL}\n\n If you didnt forget password please ignore this email.`
+            })
+            res.status(200).json({
+                status: 'success',
+                message : 'Token sent to email',
+                data : {
+                    user
+                }
+            })
+        }catch(err){
+            user.passwordResetToken = undefined
+            user.passwordResetExpires = undefined
+            await user.save({validateBeforeSave : false});
+            next( new AppError('There was an error sending email. Try again later!', 500))
+        }
+    })
+
+    //Reset password controller for Customer
     exports.resetPassword = CatchAsync(async(req,res,next) =>{
         //Get user based on the token
     const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
@@ -307,6 +341,34 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
     //log the user in, send JWT
     SendToken(user, res, 200)
 });
+
+ //Reset password controller for admin
+ exports.resetAdminPassword = CatchAsync(async(req,res,next) =>{
+    //Get user based on the token
+const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
+
+const user = await Admin.findOne({
+                    passwordResetToken : hashedToken, 
+                    passwordResetExpires : {$gt : Date.now()} 
+                })
+
+// checks if user exist and token not expired
+if(!user){
+return next(new AppError('Token is invalid or has expired', 400))
+}
+
+user.password = req.body.password;
+user.confirmPassword = req.body.confirmPassword;
+user.passwordResetToken = undefined;
+user.passwordResetExpires = undefined;
+await user.save();
+
+//update changedPasswordAT property for the user
+
+//log the user in, send JWT
+SendToken(user, res, 200)
+});
+
 
 // delete Customer Account 
 exports.deactivateCustomerAcc = CatchAsync( async (req, res, next)=>{
