@@ -9,7 +9,7 @@ const { getAllVehicles,createNewVehicle, updateVehicle} = require("../crudfiles/
 const router = express.Router()
 
 // create new vehicle
-router.post('/',AuthController.protect, async(req, res, next) => {
+router.post('/',AuthController.protect,AuthController.restrictTo(['Admin']), async(req, res, next) => {
     try{
         const result = await createNewVehicle(req);
         
@@ -25,7 +25,7 @@ router.post('/',AuthController.protect, async(req, res, next) => {
 
 //get all vehicles
 
-router.get('/',AuthController.protect, async(req,res,next) => {
+router.get('/',AuthController.protect,AuthController.restrictTo(['Admin']), async(req,res,next) => {
     try {
         const result = await getAllVehicles(req);
         

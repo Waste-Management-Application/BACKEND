@@ -20,8 +20,8 @@ router.patch("/resetPassword/:token", AuthController.resetPassword)
 
 router
       .route("/customers/")
-      .get(customerController.getAllCustomers)
-      .post(customerController.createCustomer)
+      .get(AuthController.protect,AuthController.restrictTo(['Admin']),customerController.getAllCustomers)
+      .post(AuthController.protect,AuthController.restrictTo(['Admin']),customerController.createCustomer)
 
 // router.route("/UpdateCustomerLocation/:id")
 //       .patch(AuthController.protect, customerController.updateCustomerLocation)        
@@ -34,19 +34,19 @@ router
 //     .patch(customerController.updateCustomer)
 
 router.route("/customers/:id")
-    .get(customerController.getCustomerById)
-    .patch(customerController.updateCustomer)
-    .delete(customerController.deleteCustomerAccount)
-    .delete(AuthController.deactivateCustomerAcc)
+    .get(AuthController.protect,AuthController.restrictTo(['Admin','Customer']),customerController.getCustomerById)
+    .patch(AuthController.protect,AuthController.restrictTo(['Admin','Customer']),customerController.updateCustomer)
+    .delete(AuthController.protect,AuthController.restrictTo(['Admin','Customer']),customerController.deleteCustomerAccount)
+    .delete(AuthController.protect,AuthController.restrictTo(['Admin','Customer']),AuthController.deactivateCustomerAcc)
     
     
 router
     .route("/drivers/")    
-    .get(driverController.getAllDrivers)
-    .post(driverController.createDriver)
+    .get(AuthController.protect,AuthController.restrictTo(['Admin']),driverController.getAllDrivers)
+    .post(AuthController.protect,AuthController.restrictTo(['Admin']),driverController.createDriver)
 
 router.route("/UpdateDriverLocation")
-      .post(AuthController.protect,driverController.updateDriverLocation)    
+      .post(AuthController.protect,AuthController.restrictTo(['Admin','Driver']),AuthController.protect,driverController.updateDriverLocation)    
 
 
 
@@ -56,10 +56,10 @@ router.route("/UpdateDriverLocation")
 //     .patch(driverController.updateDriver)
 
 router.route("/drivers/:id")
-    .get(driverController.getDriverByID)
-    .patch(driverController.updateDriver)
-    .delete(driverController.deleteDriverAccount)
-    .delete(AuthController.deactivateDriverAcc)
+    .get(AuthController.protect,AuthController.restrictTo(['Admin','Driver']),driverController.getDriverByID)
+    .patch(AuthController.protect,AuthController.restrictTo(['Admin','Driver']),driverController.updateDriver)
+    .delete(AuthController.protect,AuthController.restrictTo(['Admin','Driver']),driverController.deleteDriverAccount)
+    .delete(AuthController.protect,AuthController.restrictTo(['Admin','Driver']),AuthController.deactivateDriverAcc)
     
 
 

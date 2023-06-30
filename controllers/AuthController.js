@@ -209,12 +209,15 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
        if (!currentUser) {
           currentUser = await Driver.findById(decoded.id);
            if (!currentUser){
-               return next(new AppError('User with this token does no longer exist', 401));    
+            currentUser = await Admin.findById(decoded.id);
+            if(!currentUser){
+                return next(new AppError('User with this token does no longer exist', 401));    
+            }
            }
         }
       
          //check if user changed password after token was issued
-          if(currentUser.role === 'Customer'){
+          if(currentUser.role === 'Customer' || currentUser.role === 'Admin'){
               if(currentUser.passwordChangedAfter(decoded.iat)){
                   return next( new AppError('User recently changed Password. Please log in again', 400))
               }

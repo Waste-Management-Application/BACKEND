@@ -10,7 +10,7 @@ const {getAllDustbins,createNewDustbin,createNewDustbinRequest,getAllDustbinRequ
 const router = express.Router()
 
 // create new dustbin
-router.post('/',AuthController.protect, async(req, res, next) => {
+router.post('/',AuthController.protect,AuthController.restrictTo(['Admin']), async(req, res, next) => {
     try{
         const result = await createNewDustbin(req);
         
@@ -41,7 +41,7 @@ router.post('/dustbinRequest',AuthController.protect, AuthController.restrictTo(
     
 })
 // get all dustbin request with customer details
-router.get('/dustbinRequest',AuthController.protect,async(req,res,next) => {
+router.get('/dustbinRequest',AuthController.protect,AuthController.restrictTo(['Admin']),async(req,res,next) => {
     try {
         const result = await getAllDustbinRequest(req);
         
@@ -60,7 +60,7 @@ router.get('/dustbinRequest',AuthController.protect,async(req,res,next) => {
 
 //get all dustbins
 
-router.get('/',AuthController.protect,async(req,res,next) => {
+router.get('/',AuthController.protect,AuthController.restrictTo(['Admin']),async(req,res,next) => {
     try {
         const result = await getAllDustbins(req);
         

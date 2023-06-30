@@ -25,7 +25,7 @@ router.post('/',AuthController.protect,AuthController.restrictTo(['Driver']), as
 })
 
 //get all tasks completed
-router.get('/',AuthController.protect,async(req,res,next) => {
+router.get('/',AuthController.protect,AuthController.restrictTo(['Admin']),async(req,res,next) => {
     try {
         const result = await getAllTasks(req);
         
