@@ -8,11 +8,11 @@ const express = require('express')
 
 
 const router = express.Router()
-//Customer SignUp route
+//Customer SignUp and SignIn route
 router.post("/customerSignUp", AuthController.customerSignUp)
-router.post("/driverSignUp", AuthController.driverSignUp)
-//Driver SignUp route
 router.post("/customerSignIn", AuthController.customerSignIn)
+//Driver SignUp and SignIn route
+router.post("/driverSignUp", AuthController.driverSignUp)
 router.post("/driverSignIn", AuthController.driverSignIn)
 //ForgotPassword and ResetPassword 
 router.post("/forgotPassword", AuthController.forgotPassword)

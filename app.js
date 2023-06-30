@@ -12,6 +12,7 @@ const DustbinRouter = require("./controllers/dustbinController")
 const taskRouter = require("./controllers/taskController")
 const vehicleRouter = require("./controllers/vehicleController")
 const feedbackRouter = require("./controllers/feedbackController")
+const adminRoutes = require('./routes/adminRoutes')
 
 
 const cors = require('cors')
@@ -30,9 +31,10 @@ app.use((req, res, next)=>{
 
 
 
+
+
 app.use("/api/BinBuddy",[ UsersRouter, DustbinRouter,taskRouter,vehicleRouter,feedbackRouter]);
-
-
+app.use("/api/BinBuddyAdmin", [adminRoutes]);
 
 // handling unhandled routes
 app.all("*", (req, res, next)=>{

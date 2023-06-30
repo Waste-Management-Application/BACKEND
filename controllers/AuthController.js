@@ -5,6 +5,7 @@ const randomstring = require('randomstring');
 
 const Customer = require('../model/customer')
 const Driver = require('../model/driver')
+const Admin = require('../model/admin')
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto')
@@ -33,6 +34,30 @@ const SendToken = (newUser, res, statusCode,message) => {
    })
 
 }
+
+//Admin signUp controller
+exports.adminSignUp = CatchAsync(async(req,res,next)=> {
+
+    const adminExists = await Admin.checkAdminExists();
+    if (adminExists) {
+        return next(new AppError('Admin account already exists', 400 ))
+    }
+    
+    const newUser = await Admin.create({
+        firstName:req.body.firstName, 
+        lastName:req.body.lastName,
+        email:req.body.email, 
+        contact:req.body.contact, 
+        password:req.body.password,
+        confirmPassword:req.body.confirmPassword,
+        role:"Admin",
+
+    })
+
+    SendToken(newUser,res,201,'SignUp successfull')
+    
+
+})
   
 
 //cutomer signUp controller
@@ -87,6 +112,30 @@ exports.driverSignUp = CatchAsync(async(req,res,next)=> {
         
 
 })
+
+
+// Admin login controller
+exports.adminSignIn = CatchAsync(async (req, res, next) =>{
+    const {email, password} = req.body
+    // check if email and password exist
+    if(!email || !password){
+        return next(new AppError('Provide email and password', 400 ))
+    }
+    // checks if user exists and password is correct
+    const newUser = await Admin.findOne({email}).select('+password');
+
+    if(!newUser || !(await newUser.correctPassword(password, newUser.password))){
+        return next(new AppError('Incorrect email or password',401))
+    }
+
+    // if(!newUser.isActive){
+    //     return next(new AppError('Account is not active', 400))
+    // }
+
+    SendToken(newUser, res, 200, 'Admin login successful')
+
+})
+
 
 
 // customer login controller
@@ -275,4 +324,39 @@ exports.deactivateDriverAcc = CatchAsync( async (req, res, next)=>{
     SendToken(user, res, 204);
 })
 
+// Update admin profile
+exports.updateAdminAcc = CatchAsync(async(req, res, next) =>{
+    const id = req.params.id;
+    const user = await Admin.findOneAndUpdate({_id: id}, req.body, {
+        new: true,
+        runValidators: true
+    })
+
+    if(!user){
+        return next(new AppError('No Admin with such an id', 401))
+    }
+        
+
+    res.status(200).json({
+        status : "Successfully Updated",
+        data:{
+            user
+        }
+    })
+
+})
+
+//delete admin profile
+exports.deleteAdminAccount = CatchAsync(async(req, res, next) => {
+	const id = req.params.id;
+	const admin = await Admin.findOneAndDelete({_id: id})
+	if(!admin){
+		return next(new AppError('No Admin with such an id', 401));
+	}
+	res.status(200).json({
+		status: "Successfully deleted"
+	})
+	
+	}
+)
 
