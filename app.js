@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require("morgan");
 
+
 const app = express();
 
 const globalErrorHandler = require('./controllers/errorController')
@@ -30,9 +31,7 @@ app.use((req, res, next)=>{
 
 
 
-
-
-
+// specified routes for admin and normal Users
 app.use("/api/BinBuddy",[ UsersRouter, DustbinRouter,taskRouter,vehicleRouter,feedbackRouter]);
 app.use("/api/BinBuddyAdmin", [adminRoutes]);
 

@@ -26,7 +26,7 @@ router
 // router.route("/UpdateCustomerLocation/:id")
 //       .patch(AuthController.protect, customerController.updateCustomerLocation)        
       
-
+router.route("/logout").post(AuthController.protect,AuthController.logout)
 
 // router
 //     .route("/customers/:lastName")
@@ -68,7 +68,8 @@ router.route("/drivers/:id")
 router.use("/dustbin", require('../controllers/dustbinController'))    
 router.use("/vehicle", require('../controllers/vehicleController'))    
 router.use("/task", require('../controllers/taskController'))    
-router.use("/feedback", require('../controllers/feedbackController'))    
+router.use("/feedback", require('../controllers/feedbackController'))   
+router.use("/complaint", require('../controllers/complaintController'))  
 
 
 

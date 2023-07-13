@@ -4,7 +4,7 @@ const taskSchema = new mongoose.Schema({
     driver:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Driver',
-        required: true
+        required: false
     },
 
     // taskDescription:{

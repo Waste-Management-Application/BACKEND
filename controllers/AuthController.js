@@ -13,7 +13,7 @@ const {promisify} = require('util');
 const sendEmail = require("../utils/email");
 const bcrypt = require('bcryptjs');
 
-
+const revokedTokens = new Set();
 
 const SignToken = (id) => { 
     return jwt.sign({id}, 
@@ -54,7 +54,12 @@ exports.adminSignUp = CatchAsync(async(req,res,next)=> {
 
     })
 
-    SendToken(newUser,res,201,'SignUp successfull')
+    res.status(200).json({
+        status : "SignUp Successful",
+        data:{
+            newUser
+        }
+    })
     
 
 })
@@ -76,7 +81,12 @@ exports.customerSignUp = CatchAsync(async(req,res,next)=> {
 
     })
 
-    SendToken(newUser,res,201,'SignUp successfull')
+    res.status(200).json({
+        status : "SignUp Successful",
+        data:{
+            newUser
+        }
+    })
     
 
 })
@@ -108,8 +118,13 @@ exports.driverSignUp = CatchAsync(async(req,res,next)=> {
 
     })
 
-    SendToken(newUser,res,201,'See Admin for your Login password')
-        
+    res.status(202).json({
+        status:"success",
+        message:"Contact Admin for your Login Password",
+        data : {
+            newUser
+        }
+    })
 
 })
 
@@ -199,6 +214,13 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
           if(!token){
               return next(new AppError('You are not logged in.Please Log in to get access', 401))
           }
+
+
+          // Check if the token exists in the revoked tokens list
+          if (revokedTokens.has(token)) {
+            return next(new AppError('Invalid token', 401));
+          }
+        
 
        // verifying token
        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
@@ -425,3 +447,21 @@ exports.deleteAdminAccount = CatchAsync(async(req, res, next) => {
 	}
 )
 
+// 
+exports.logout = CatchAsync(async(req,res,next)=>{
+  // Retrieve the token from the request headers
+  let token;
+  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+      token = req.headers.authorization.split(' ')[1]
+  }
+
+  // Add the token to the revoked tokens list
+  revokedTokens.add(token);
+
+  // Respond with a success message
+  res.status(200).json({ message: 'Logout successful' });
+   
+});
+
+
+  

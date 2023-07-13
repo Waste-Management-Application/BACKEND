@@ -92,7 +92,7 @@ exports.deleteCustomerAccount = CatchAsync(async(req, res, next) => {
 	if(!customer){
 		return next(new AppError('No customer with such an id', 401));
 	}
-	res.status(204).json({
+	res.status(200).json({
 		status: "Successfully deleted"
 	})
 	

@@ -54,6 +54,18 @@ const AdminSchema = new mongoose.Schema({
 	passwordResetToken : String,
 	passwordResetExpires: Date,
 
+    isActive:{
+        type: Boolean,
+        default: true,
+        select: false
+    },
+
+    DateRegistered: {
+        type:Date,
+        default: Date.now()
+    }
+
+
 
 })
 

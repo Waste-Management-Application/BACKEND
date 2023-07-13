@@ -14,7 +14,11 @@ router
         .delete("/deleteAdmin/:id", AuthController.deleteAdminAccount )
         .patch("/UpdateAdmin/:id", AuthController.updateAdminAcc)
 
+
+router.route("/logout").post(AuthController.protect,AuthController.logout)        
+
 router.post("/forgotPassword", AuthController.forgotAdminPassword)
 router.patch("/resetPassword/:token", AuthController.resetAdminPassword)
+
     
 module.exports = router;

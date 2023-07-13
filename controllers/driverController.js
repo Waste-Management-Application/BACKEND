@@ -45,7 +45,7 @@ exports.createDriver = CatchAsync(async(req, res, next) =>{
 
 //get all Drivers from database
 exports.getAllDrivers = CatchAsync(async(req, res, next) =>{
-    const drivers   = await Driver.find()
+    const drivers   = await Driver.find().populate({path:'vehicle', select:['vehicleNo']});
     
     res.status(200).json({
         status: "success",

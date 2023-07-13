@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const feedbackSchema = new mongoose.Schema({
+const complaintSchema = new mongoose.Schema({
     
     customer:{
         type:mongoose.Schema.Types.ObjectId,
@@ -16,15 +16,7 @@ const feedbackSchema = new mongoose.Schema({
         trim:true
     },
 
-    starsNo:{
-        type:Number,
-        required:true,
-        default : 4.5
-
-    },
-
     
-
     DateSent: {
         type:Date,
         default:Date.now()
@@ -32,5 +24,5 @@ const feedbackSchema = new mongoose.Schema({
 
 })
 
-const Feedback = mongoose.model("Feedback",feedbackSchema)
-module.exports= Feedback;
+const Complaint = mongoose.model("Complaint",complaintSchema)
+module.exports= Complaint;

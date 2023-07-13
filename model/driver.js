@@ -61,7 +61,13 @@ const DriverSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
         select: false
-    }
+    },
+
+    vehicle:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Vehicle',
+        required: false
+    },
     
 
 })
