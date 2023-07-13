@@ -79,6 +79,53 @@ async function getAllDustbinRequest() {
 
 
 
+//NEW//Create new pickup request
+async function createNewPickupRequest(req){
+    try{
+        const NewPickupRequest = await Dustbin.Pickup.create({
+            
+            customer:req.body.customer,
+            // status:req.body.status
+
+        
+        });
+        if(NewPickupRequest === null){
+            return{
+                status:'failed',
+                message:'unable to send request'
+            }
+        }
+        return {
+            status: "success",
+            message: "Request sent successfully",
+            data : NewPickupRequest
+        };
+
+
+        }
+        catch(err){
+            console.log(err)
+            return{
+                status: "error",
+                message: "An error occured, please try again later",
+            };
+        }
+
+}
+
+// Get all customers who requested pickups
+async function getAllPickupRequest() {
+    const result = await Dustbin.Pickup.find().populate({path:'customer', select:['firstName', 'lastName','Location']});
+    return {
+        status: "success",
+        message: "successfully retrieved all requests",
+        results : result.length,
+        data: result
+        }
+}
+
+
+
     //get all dustbins
 async function getAllDustbins(){
     const result =await Dustbin.Dustbin.find()
@@ -97,7 +144,9 @@ module.exports= {
     getAllDustbins,
     createNewDustbin,
     createNewDustbinRequest,
-    getAllDustbinRequest
+    getAllDustbinRequest,
+    getAllPickupRequest,
+    createNewPickupRequest
     
 }
 

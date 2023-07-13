@@ -60,10 +60,32 @@ const dustbinRequestSchema= new mongoose.Schema({
     type:String, default:"pending"}
 });
 
-const Dustbin = mongoose.model("Dustbin",dustbinSchema)
 
+const pickupSchema = new mongoose.Schema({
+  customer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Customer',
+    required: false
+
+  },
+
+  location: {
+    type: String,
+    required:false
+  },
+
+  requestDate: {
+    type:Date,
+    default:Date.now()
+  },
+  status: {
+    type:String, default:"pending"}
+}); 
+
+const Dustbin = mongoose.model("Dustbin",dustbinSchema)
+const Pickup = mongoose.model("Pickup",pickupSchema)
 
 const dustbinRequest = mongoose.model("dustbinRequest",dustbinRequestSchema )
 module.exports = {
-  Dustbin, dustbinRequest
+  Dustbin, dustbinRequest , Pickup
 }

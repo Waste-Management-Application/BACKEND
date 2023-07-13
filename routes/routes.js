@@ -69,7 +69,7 @@ router.use("/dustbin", require('../controllers/dustbinController'))
 router.use("/vehicle", require('../controllers/vehicleController'))    
 router.use("/task", require('../controllers/taskController'))    
 router.use("/feedback", require('../controllers/feedbackController'))   
-router.use("/complaint", require('../controllers/complaintController'))  
+ 
 
 
 
