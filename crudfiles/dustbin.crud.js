@@ -124,6 +124,74 @@ async function getAllPickupRequest() {
         }
 }
 
+//Changing status of dustbin request
+async function changeDustbinRequestStatus(req){
+    try {
+        const id = req.params.id;
+        const dustbinRequest = await Dustbin.dustbinRequest.findById({_id:id});
+    
+        if (!dustbinRequest) {
+            return{
+                status:'failed',
+                message:'unable to change status'
+            }
+        }
+    
+        // Update the status of the dustbin request to 'served'
+        dustbinRequest.status = "served";
+    
+        // Save the updated dustbin request in the database
+        await dustbinRequest.save();
+
+        return {
+            status: "success",
+            message: "dustbin request successfully served",
+        };
+      } 
+      catch(err){
+        console.log(err)
+        return{
+            status: "error",
+            message: "An error occured, please try again later",
+        };
+    }
+}
+
+
+//Changing status of Pickup request
+async function changePickupRequestStatus(req){
+    try {
+        const id = req.params.id;
+        const PickupRequest = await Dustbin.Pickup.findById({_id:id});
+    
+        if (!PickupRequest) {
+            return{
+                status:'failed',
+                message:'unable to change status'
+            }
+        }
+    
+        // Update the status of the dustbin request to 'served'
+        PickupRequest.status = "served";
+    
+        // Save the updated dustbin request in the database
+        await PickupRequest.save();
+
+        return {
+            status: "success",
+            message: "Pickup request successfully served",
+        };
+      } 
+      catch(err){
+        console.log(err)
+        return{
+            status: "error",
+            message: "An error occured, please try again later",
+        };
+    }
+}
+
+
 
 
     //get all dustbins
@@ -146,7 +214,9 @@ module.exports= {
     createNewDustbinRequest,
     getAllDustbinRequest,
     getAllPickupRequest,
-    createNewPickupRequest
+    createNewPickupRequest,
+    changeDustbinRequestStatus,
+    changePickupRequestStatus
     
 }
 

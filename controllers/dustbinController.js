@@ -6,7 +6,7 @@ const AuthController = require('../controllers/AuthController')
 //const CatchAsync = require("../utils/CatchAsync");
 //const AppError = require("../utils/apperror");
 
-const {getAllDustbins,createNewDustbin,createNewDustbinRequest,getAllDustbinRequest, getAllPickupRequest,createNewPickupRequest} = require("../crudfiles/dustbin.crud");
+const {getAllDustbins,createNewDustbin,createNewDustbinRequest,getAllDustbinRequest,changeDustbinRequestStatus,changePickupRequestStatus, getAllPickupRequest,createNewPickupRequest} = require("../crudfiles/dustbin.crud");
 const router = express.Router()
 
 // create new dustbin
@@ -83,9 +83,39 @@ router.get('/pickupRequest',AuthController.protect,AuthController.restrictTo(['A
         next(error);
     }
 })
-       
-  
-    
+
+// change dustbin request status
+router.post('/dustbinRequest/:id',async(req,res,next)=>{
+    try {
+        const result = await changeDustbinRequestStatus(req);
+        
+        if (result.status==="success"){
+            return res.status(200).json(result);
+        }
+        return res.status(400).json(result);
+    }
+    catch(error){
+        next(error);
+    }
+})
+
+// change Pickup request status
+router.post('/pickupRequest/:id',async(req,res,next)=>{
+    try {
+        const result = await changePickupRequestStatus(req);
+        
+        if (result.status==="success"){
+            return res.status(200).json(result);
+        }
+        return res.status(400).json(result);
+    }
+    catch(error){
+        next(error);
+    }
+})
+
+
+         
 
 //get all dustbins
 
