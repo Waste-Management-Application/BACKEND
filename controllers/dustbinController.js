@@ -85,7 +85,7 @@ router.get('/pickupRequest',AuthController.protect,AuthController.restrictTo(['A
 })
 
 // change dustbin request status
-router.post('/dustbinRequest/:id',async(req,res,next)=>{
+router.post('/dustbinRequest/:id',AuthController.protect,AuthController.restrictTo(['Customer','Admin']),async(req,res,next)=>{
     try {
         const result = await changeDustbinRequestStatus(req);
         
@@ -100,7 +100,7 @@ router.post('/dustbinRequest/:id',async(req,res,next)=>{
 })
 
 // change Pickup request status
-router.post('/pickupRequest/:id',async(req,res,next)=>{
+router.post('/pickupRequest/:id',AuthController.protect,AuthController.restrictTo(['Customer','Admin']),async(req,res,next)=>{
     try {
         const result = await changePickupRequestStatus(req);
         

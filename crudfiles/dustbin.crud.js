@@ -171,10 +171,10 @@ async function changePickupRequestStatus(req){
             }
         }
     
-        // Update the status of the dustbin request to 'served'
+        // Update the status of the pickup request to 'served'
         PickupRequest.status = "served";
     
-        // Save the updated dustbin request in the database
+        // Save the updated pickup request in the database
         await PickupRequest.save();
 
         return {
