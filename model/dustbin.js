@@ -29,9 +29,6 @@ const dustbinSchema = new mongoose.Schema({
 
 })
 
-
-
-
 dustbinSchema.plugin(autoIncrement.plugin,{
   model: 'Dustbin',
   field: 'dustbinNo',
@@ -46,12 +43,6 @@ const dustbinRequestSchema= new mongoose.Schema({
     required: false
 
   },
-
-  location: {
-    type: String,
-    required:false
-  },
-
   requestDate: {
     type:Date,
     default:Date.now()
@@ -68,12 +59,6 @@ const pickupSchema = new mongoose.Schema({
     required: false
 
   },
-
-  location: {
-    type: String,
-    required:false
-  },
-
   requestDate: {
     type:Date,
     default:Date.now()

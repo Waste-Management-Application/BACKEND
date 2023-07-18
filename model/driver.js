@@ -22,11 +22,11 @@ const DriverSchema = new mongoose.Schema({
         type: {
           type: String,
           enum: ['Point'], // Only allow 'Point' as the type
-          required: true
+          required: false
         },
         coordinates: {
           type: [Number], // Array of two numbers: [longitude, latitude]
-          required: true,
+          required: false,
         },
         digitalAddress: String
       },
@@ -36,16 +36,13 @@ const DriverSchema = new mongoose.Schema({
         required:[true, 'Email is required'],
         unique:true,
         lowercase:true,
-        validate : [validator.isEmail, 'FirstName is required']
+        validate : [validator.isEmail, 'Email is required']
     },
     contact:{
         type:String,
         require:[true, 'contact is required']
     },
-    gender:{
-        type:String,
-        required:true
-    },
+
     hashedPassword : {
         type: String,
         required:true,

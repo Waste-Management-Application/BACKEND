@@ -24,14 +24,20 @@ const customerSchema = new mongoose.Schema({
         type: {
           type: String,
           enum: ['Point'], // Only allow 'Point' as the type
-          required: true
+          required: false
         },
         coordinates: {
           type: [Number], // Array of two numbers: [longitude, latitude]
-          required: true,
+          required: false,
         },
-        digitalAddress: String
+
+        digitalAddress: {
+            type: String,
+            required:false
+        },
       },
+
+      
 
     contact:{
         type:String,
@@ -43,7 +49,7 @@ const customerSchema = new mongoose.Schema({
         required:[true, 'Email is required'],
         unique:true,
         lowercase:true,
-        validate : [validator.isEmail, 'FirstName is required']
+        validate : [validator.isEmail, 'Email is required']
     },
     gender:{
         type:String,
@@ -57,7 +63,7 @@ const customerSchema = new mongoose.Schema({
     },
     confirmPassword:{
         type:String,
-        required:[true, 'Confirm password'],
+        required:[true, 'Confirm password is required'],
         validate: {
             validator : function(el){
                 return el === this.password;

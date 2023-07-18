@@ -68,7 +68,7 @@ async function createNewDustbinRequest(req){
 
 // Get all customers who requested bins
 async function getAllDustbinRequest() {
-    const result = await Dustbin.dustbinRequest.find().populate({path:'customer', select:['firstName', 'lastName','Location']});
+    const result = await Dustbin.dustbinRequest.find().populate({path:'customer', select:['firstName', 'lastName','location']});
     return {
         status: "success",
         message: "successfully retrieved all requests",
@@ -115,7 +115,7 @@ async function createNewPickupRequest(req){
 
 // Get all customers who requested pickups
 async function getAllPickupRequest() {
-    const result = await Dustbin.Pickup.find().populate({path:'customer', select:['firstName', 'lastName','Location']});
+    const result = await Dustbin.Pickup.find().populate({path:'customer', select:['firstName', 'lastName','location']});
     return {
         status: "success",
         message: "successfully retrieved all requests",

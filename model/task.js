@@ -15,7 +15,7 @@ const taskSchema = new mongoose.Schema({
 
     taskCompleted:{
         type:Boolean,
-        default:false
+        default:true
 
     },
 
