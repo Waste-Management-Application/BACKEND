@@ -13,6 +13,8 @@ const {promisify} = require('util');
 const sendEmail = require("../utils/email");
 const bcrypt = require('bcryptjs');
 
+const frontendPort = process.env.FRONTEND_PORT || 5173;
+
 const revokedTokens = new Set();
 
 const SignToken = (id) => { 
@@ -281,7 +283,7 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
         const resetToken = user.createPasswordResetToken();
         await user.save({validateBeforeSave : false});
         //send it to user email
-        const resetURL = `${req.protocol}://${req.get('host')}/api/Binbuddy/resetPassword/${resetToken}`;
+        const resetURL =`${req.protocol}://${req.hostname}:${frontendPort}/ResetPassword/${resetToken}`;
         try{
             await sendEmail({
                 email: user.email,
