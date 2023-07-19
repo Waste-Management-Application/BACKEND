@@ -46,7 +46,8 @@ exports.adminSignUp = CatchAsync(async(req,res,next)=> {
     const newUser = await Admin.create({
         firstName:req.body.firstName, 
         lastName:req.body.lastName,
-        email:req.body.email, 
+        email:req.body.email,
+        gender:req.body.gender, 
         contact:req.body.contact, 
         password:req.body.password,
         confirmPassword:req.body.confirmPassword,
@@ -102,9 +103,8 @@ exports.driverSignUp = CatchAsync(async(req,res,next)=> {
         firstName:req.body.firstName, 
         lastName:req.body.lastName,
         email:req.body.email,
-        location:req.body.location, 
-        contact:req.body.contact, 
         gender:req.body.gender,
+        contact:req.body.contact, 
         role:"Driver",
         hashedPassword: hashedPassword
     })

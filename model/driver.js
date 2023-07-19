@@ -18,19 +18,6 @@ const DriverSchema = new mongoose.Schema({
         required:[true, 'LastName is required'],
         trim:true
     },
-    location: {
-        type: {
-          type: String,
-          enum: ['Point'], // Only allow 'Point' as the type
-          required: false
-        },
-        coordinates: {
-          type: [Number], // Array of two numbers: [longitude, latitude]
-          required: false,
-        },
-        digitalAddress: String
-      },
-
     email:{
         type:String,
         required:[true, 'Email is required'],
@@ -53,7 +40,6 @@ const DriverSchema = new mongoose.Schema({
         type:Date,
         default: Date.now()
     },
-
     isActive:{
         type: Boolean,
         default: true,
@@ -65,11 +51,16 @@ const DriverSchema = new mongoose.Schema({
         ref: 'Vehicle',
         required: false
     },
+
+    gender:{
+        type: String,
+        required:[true, 'gender is required']
+    }
     
 
 })
 
-DriverSchema.index({ location: '2dsphere' });
+
 
 const Driver = mongoose.model("Driver",DriverSchema)
 module.exports= Driver;

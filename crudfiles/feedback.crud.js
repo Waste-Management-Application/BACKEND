@@ -4,11 +4,9 @@ const Feedback = require('../model/feedback');
 // Create a new feedback
 async function createFeedback (req) {
   try {
-    const feedback = await Feedback.create({
-        customer:req.body.customer, 
+    const feedback = await Feedback.Feedback.create({
         message:req.body.message,
-        starsNo:req.body.starsNo 
-
+        starsNo:req.body.starsNo
     })
        
      if(feedback === null){
@@ -35,7 +33,7 @@ async function createFeedback (req) {
 
 // Get all feedbacks with customer details
 async function getAllFeedbacks() {
-    const result = await Feedback.find().populate({path:'customer', select:['firstName','lastName']});
+    const result = await Feedback.Feedback.find().populate({path:'customer', select:['firstName','lastName']});
     return {
         status: "success",
         message: "successfully retrieved feedbacks",
@@ -48,15 +46,13 @@ async function getAllFeedbacks() {
 // Create a new complaint
 async function createComplaint (req) {
     try {
-      const feedback = await Feedback.Complaint.create({
-          customer:req.body.customer, 
+      const feedback = await Feedback.Complaint.create({ 
           message:req.body.message,
           
-  
       })
          
        if(feedback === null){
-              return {
+            return {
                   status: 'failed',
                   message: 'unable to send feedbacks'
               }
