@@ -5,7 +5,7 @@ const feedbackSchema = new mongoose.Schema({
     customer:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Customer',
-        required: false
+        required: true
     },
     
     
@@ -37,7 +37,7 @@ const complaintSchema = new mongoose.Schema({
     customer:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Customer',
-        required: false
+        required: true
     },
     
     

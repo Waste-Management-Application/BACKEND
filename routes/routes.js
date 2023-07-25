@@ -19,9 +19,11 @@ router.post("/driverSignIn", AuthController.driverSignIn)
 router.post("/forgotPassword", AuthController.forgotPassword)
 router.patch("/resetPassword/:token", AuthController.resetPassword)
 //Payment routes
-router.post("/payment/initiate", paymentController.initiatePayment);
-router.get("/payment/verify/:reference", paymentController.verifyPayment);
-router.get("/payment/verify", paymentController.handlePaymentSuccess);
+router.post("/payment/initiate", AuthController.protect,paymentController.initiatePayment);
+router.get("/payment/verify/:reference", AuthController.protect,paymentController.verifyPayment);
+router.get("/payment/verify", AuthController.protect,paymentController.handlePaymentSuccess);
+
+router.post("/SendMessage",AuthController.sendAnnouncement)
 
 router
       .route("/customers/")

@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto')
 const {promisify} = require('util');
 const sendEmail = require("../utils/email");
+const sendSMS = require("../utils/SMS");
 const bcrypt = require('bcryptjs');
 
 const frontendPort = process.env.FRONTEND_PORT || 5173;
@@ -229,11 +230,15 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
 
        //Check if users still exist
        let currentUser = await Customer.findById(decoded.id);
+        //Store the user id in req.body
+        req.body.customer = decoded.id;
       
        if (!currentUser) {
           currentUser = await Driver.findById(decoded.id);
+          req.body.driver = decoded.id;
            if (!currentUser){
             currentUser = await Admin.findById(decoded.id);
+            req.body.admin= decoded.id;
             if(!currentUser){
                 return next(new AppError('User with this token does no longer exist', 401));    
             }
@@ -246,6 +251,8 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
                   return next( new AppError('User recently changed Password. Please log in again', 400))
               }
           }
+
+         
 
         
       //GRANT ACCESS TO PROTECTED ROUTE
@@ -465,5 +472,48 @@ exports.logout = CatchAsync(async(req,res,next)=>{
    
 });
 
-
+exports.sendAnnouncement = CatchAsync(async (req, res, next) => {
+    const { message, targetAudience } = req.body; // Assuming the message and targetAudience are provided in the request body
+  
+    if (!message || !targetAudience) {
+      return res.status(400).json({ error: 'Message and targetAudience are required' });
+    }
+  
+    try {
+      let recipients;
+  
+      if (targetAudience === 'customers') {
+        recipients = await Customer.find().select('contact');
+      } else if (targetAudience === 'drivers') {
+        recipients = await Driver.find().select('contact');
+      } else {
+        return res.status(400).json({ error: 'Invalid targetAudience provided' });
+      }
+  
+      if (recipients.length === 0) {
+        return res.status(404).json({ error: 'No recipients found for the selected audience' });
+      }
+  
+      // Send the SMS to each recipient's contact
+      for (const recipient of recipients) {
+        const contact = recipient.contact;
+        if (!contact) {
+          console.error(`Invalid contact data for recipient ${recipient._id}`);
+          continue; // Move to the next recipient
+        }
+  
+        try {
+          await sendSMS(contact, message); // Send the message to the contact
+          console.log(`SMS sent to recipient contact: ${contact}`);
+        } catch (error) {
+          console.error(`SMS sending error to recipient contact ${contact}:`, error);
+        }
+      }
+  
+      res.status(200).json({ message: 'Announcement sent successfully to selected audience' });
+    } catch (error) {
+      console.error('Error sending announcement:', error);
+      res.status(500).json({ error: 'Error sending the announcement: ' + error.message });
+    }
+  });
   

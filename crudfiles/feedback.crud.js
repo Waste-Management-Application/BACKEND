@@ -6,7 +6,8 @@ async function createFeedback (req) {
   try {
     const feedback = await Feedback.Feedback.create({
         message:req.body.message,
-        starsNo:req.body.starsNo
+        starsNo:req.body.starsNo,
+        customer:req.body.customer
     })
        
      if(feedback === null){
@@ -48,6 +49,7 @@ async function createComplaint (req) {
     try {
       const feedback = await Feedback.Complaint.create({ 
           message:req.body.message,
+          customer:req.body.customer
           
       })
          
