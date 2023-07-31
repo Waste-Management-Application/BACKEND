@@ -30,15 +30,16 @@ const customerSchema = new mongoose.Schema({
           type: [Number], // Array of two numbers: [longitude, latitude]
           required: false,
         },
-
-        digitalAddress: {
+        
+        city: {
             type: String,
             required:false
         },
       },
 
-      
+     
 
+      
     contact:{
         type:String,
         require:[true, 'contact is required']
@@ -88,9 +89,6 @@ const customerSchema = new mongoose.Schema({
         type:Date,
         default: Date.now()
     }
-    
-    
-
 
 })
 

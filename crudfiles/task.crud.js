@@ -6,7 +6,6 @@ async function createNewTask(req){
         const newTask = await Task.create({
             taskType:req.body.taskType,
             taskCompleted:req.body.taskCompleted,
-            driver:req.body.driver
             
         });
         if(newTask === null){
@@ -34,14 +33,14 @@ async function createNewTask(req){
 
 //get all task completed 
 async function getAllTasks(){
-    const result = await Task.find().populate({path:'driver',select:['firstName', 'lastName']})
+    const result = await Task.find().populate({path:'driver', select:['firstName','lastName']});
 
     return{
         status: "success",
         message: "successfully retrieved Task",
         results: result.length,
         data: result
-    }
+    };
 }    
 
 //get task completed by iD
@@ -49,7 +48,7 @@ async function getTaskDetails(req){
     const id = req.params.id;
     
     try{
-        const result = await Task.findOne({_id: id}).populate({path:'driver',select:['firstName', 'lastName']})
+        const result = await Task.findOne({_id: id})
         if(result===null){
             return{
                 status:"failed" , 
@@ -68,9 +67,49 @@ async function getTaskDetails(req){
     }
 }
 
+//Changing status of Task
+async function changeTaskStatus(req, res) {
+  try {
+    const id = req.params.id;
+    const task = await Task.findById({ _id: id });
+
+    if (!task) {
+      return res.status(404).json({
+        status: 'failed',
+        message: 'unable to change status'
+      });
+    }
+
+    // Update the status of the task
+    task.taskCompleted = "Completed";
+
+    // Check if driverId is provided
+    const driverId = req.body.driverId;
+    if (driverId) {
+      // If provided, update the driver field with the driver's ID
+      task.driver = driverId;
+    }
+
+    // Save the updates
+    await task.save();
+
+    return {
+      status: "success",
+      message: "Task status successfully updated",
+    }
+    } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      status: "error",
+      message: "An error occurred, please try again later",
+    });
+  }
+} 
+
 module.exports={
     getAllTasks,
     getTaskDetails,
-    createNewTask
+    createNewTask,
+    changeTaskStatus
 
 }

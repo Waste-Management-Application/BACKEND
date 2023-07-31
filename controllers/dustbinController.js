@@ -126,9 +126,11 @@ router.get('/',AuthController.protect,AuthController.restrictTo(['Admin']),async
         if (result.status==="success"){
             return res.status(200).json(result);
         }
+       // console.log(result)
         return res.status(400).json(result);
     }
     catch(error){
+        //console.log(error);
         next(error);
     }
 })

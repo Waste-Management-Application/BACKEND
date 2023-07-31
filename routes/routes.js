@@ -27,7 +27,7 @@ router.post("/SendMessage",AuthController.sendAnnouncement)
 
 router
       .route("/customers/")
-      .get(AuthController.protect,AuthController.restrictTo(['Admin']),customerController.getAllCustomers)
+      .get(AuthController.protect,AuthController.restrictTo(['Admin','Driver']),customerController.getAllCustomers)
       .post(AuthController.protect,AuthController.restrictTo(['Admin']),customerController.createCustomer)
 
 // router.route("/UpdateCustomerLocation/:id")

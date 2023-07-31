@@ -1,28 +1,26 @@
-const Twilio = require('twilio');
+const axios = require('axios');
 
-// Set up Twilio credentials from environment variables
-const accountSid = 'ACc94feac27dba016774a5844584d6bb33';
-const authToken = '82dd4b069f28839d20caba89edf1de6a';
-const twilioPhoneNumber = '+12295372533';
+// Set up MNotify credentials from environment variables or directly
+const mnotifyApiKey = ' BbPxR3XL5KC9XQLgRp2SNcwjH ';
+const mnotifySenderId = 'Binbuddy'; // Optional - only if MNotify requires a sender ID
+const mnotifyEndpoint = 'https://apps.mnotify.net/smsapi';
 
-// Set up Twilio client
-const twilioClient = new Twilio(accountSid, authToken);
-
-// Function to send SMS
+// Function to send SMS using MNotify API
 const sendSMS = (phoneNumber, message) => {
-  twilioClient.messages
-    .create({
-      body: message,
-      from: twilioPhoneNumber,
-      to: phoneNumber
-    })
-    .then(() => {
-      console.log(`SMS sent to ${phoneNumber}`);
+  const smsData = {
+    key: mnotifyApiKey,
+    to: phoneNumber,
+    msg: message,
+    sender_id: mnotifySenderId
+  };
+
+  axios.post(mnotifyEndpoint, smsData)
+    .then(response => {
+      console.log(`SMS sent to ${phoneNumber}. Response:`, response.data);
     })
     .catch(error => {
-      console.error(`SMS sending error to ${phoneNumber}:`, error);
+      console.error(`SMS sending error to ${phoneNumber}:`, error.response.data);
     });
 };
 
 module.exports = sendSMS;
-

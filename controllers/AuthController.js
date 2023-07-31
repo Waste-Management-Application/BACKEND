@@ -14,7 +14,8 @@ const sendEmail = require("../utils/email");
 const sendSMS = require("../utils/SMS");
 const bcrypt = require('bcryptjs');
 
-const frontendPort = process.env.FRONTEND_PORT || 5173;
+const frontendPort = process.env.FRONTEND_PORT || 3000;
+const frontendPort2 = 3001
 
 const revokedTokens = new Set();
 
@@ -52,6 +53,7 @@ exports.adminSignUp = CatchAsync(async(req,res,next)=> {
         email:req.body.email,
         gender:req.body.gender, 
         contact:req.body.contact, 
+        location:"Kumasi,Ghana",
         password:req.body.password,
         confirmPassword:req.body.confirmPassword,
         role:"Admin",
@@ -84,16 +86,31 @@ exports.customerSignUp = CatchAsync(async(req,res,next)=> {
         role:"Customer",
 
     })
+     // Sending a welcome email to the customer
+     try {
+        await sendEmail({
+            email: newUser.email,
+            subject: 'Welcome to Our Community!',
+            message: `Dear ${newUser.firstName},\n\nThank you for joining our community! We are excited to have you on board and hope you enjoy our services.\n\nPlease remember make a payment of GH₵25 to Binbuddy in the app to activate our services .\n\nBest regards,\nThe Binbuddy Team`,
+        });
+    } catch (error) {
+        console.error('Error sending welcome email:', error);
+    }
+
+     // Sending an SMS to the customer
+  try {
+     await sendSMS(newUser.contact, `Dear ${newUser.firstName},\n\nWelcome to Our Community! We are excited to have you on board.\n\nPlease remember to Make a payment of GH₵25 to Binbuddy in the app to activate our services .\n\nBest regards,\nThe Binbuddy Team`);
+    } catch (error) {
+    console.error('Error sending SMS:', error);
+  }
 
     res.status(200).json({
-        status : "SignUp Successful",
-        data:{
-            newUser
-        }
-    })
-    
-
-})
+        status: "SignUp Successful",
+        data: {
+            newUser,
+        },
+    });
+});
 
 //Driver signUp controller
 exports.driverSignUp = CatchAsync(async(req,res,next)=> {
@@ -112,7 +129,7 @@ exports.driverSignUp = CatchAsync(async(req,res,next)=> {
         hashedPassword: hashedPassword
     })
 
-    const message = `A new driver account has been created by ${newUser.firstName} ${newUser.lastName}.\n\nEmail: ${newUser.email}. \nPassword: ${password}`
+    const message = `Welcome to our Company ${newUser.firstName} ${newUser.lastName}.\nBelow is your credentials to login.\n\nEmail: ${newUser.email}. \nPassword: ${password}\n\n`
 
     await sendEmail({
         email:newUser.email,
@@ -207,7 +224,6 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
     // Protecting Routes
     exports.protect = CatchAsync(async(req,res,next)=>{
     
-
           //getting token and check if its there
           let token;
           if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
@@ -251,9 +267,6 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
                   return next( new AppError('User recently changed Password. Please log in again', 400))
               }
           }
-
-         
-
         
       //GRANT ACCESS TO PROTECTED ROUTE
           req.newUser = currentUser;
@@ -290,7 +303,7 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
         const resetToken = user.createPasswordResetToken();
         await user.save({validateBeforeSave : false});
         //send it to user email
-        const resetURL =`${req.protocol}://${req.hostname}:${frontendPort}/ResetPassword/${resetToken}`;
+        const resetURL =`${req.protocol}://${req.hostname}:${frontendPort2}/ResetPassword/${resetToken}`;
         try{
             await sendEmail({
                 email: user.email,
@@ -324,7 +337,7 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
         const resetToken = user.createPasswordResetToken();
         await user.save({validateBeforeSave : false});
         //send it to user email
-        const resetURL = `${req.protocol}://${req.get('host')}/api/Binbuddy/resetPassword/${resetToken}`;
+        const resetURL = `${req.protocol}://${req.hostname}:${frontendPort}/ResetPassword/${resetToken}`;
         try{
             await sendEmail({
                 email: user.email,
@@ -440,6 +453,22 @@ exports.updateAdminAcc = CatchAsync(async(req, res, next) =>{
         }
     })
 
+})
+//get admin account
+exports.getAdminById = CatchAsync(async(req, res, next) =>{
+    const id = req.params.id;
+    const admin = await Admin.findOne({_id: id});
+
+    if(!admin){
+        return next(new AppError('No Admin with such an id', 401));
+    }
+
+    res.status(200).json({
+        status : "success",
+        data:{
+            admin
+        }
+    })
 })
 
 //delete admin profile

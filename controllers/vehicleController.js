@@ -39,17 +39,19 @@ router.get('/',AuthController.protect,AuthController.restrictTo(['Admin']), asyn
     }
 })
 
-// router.patch('/:id',AuthController.protect, async(req,res,next)=>{
-//     try{
-//         const result = await updateVehicle(req);
-//         if (result.status==="success"){
-//             return res.status(200).json(result);
-//         }
-//         return res.status(400).json(result);
-//     }
-//     catch(error){
-//         next(error);
-//     }
+router.patch('/:id',AuthController.protect,AuthController.restrictTo(['Admin']), async(req,res,next)=>{
+    try{
+        const result = await updateVehicle(req);
+        if (result.status==="success"){
+            return res.status(200).json(result);
+        }
+        return res.status(400).json(result);
+    }
+    catch(error){
+        next(error);
+    }
+
+});
 
 
 

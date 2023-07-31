@@ -14,15 +14,15 @@ const taskSchema = new mongoose.Schema({
     // },   
 
     taskCompleted:{
-        type:Boolean,
-        default:true
+        type:String,
+        default:"Not completed"
 
     },
 
     taskType:{
         type: String,
-        enum : ['Empty Bin', 'Deliver Bin'],
-        default: 'Empty Bin'
+        enum : ['Empty Bins', 'Deliver Bin', 'Special Pickup'],
+        default: 'Empty Bins'
 
     },
 

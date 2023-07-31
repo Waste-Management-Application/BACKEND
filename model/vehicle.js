@@ -6,8 +6,7 @@ autoIncrement.initialize(mongoose.connection);
 
 const vehicleSchema = new mongoose.Schema({
     driver:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'Driver',
+        type:String,
         required: false
     },
 

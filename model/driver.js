@@ -45,16 +45,26 @@ const DriverSchema = new mongoose.Schema({
         default: true,
         select: false
     },
-
-    vehicle:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'Vehicle',
-        required: false
+    location:{
+        type: {
+            type: String,
+            enum: ['Point'], // Only allow 'Point' as the type
+            required: false
+          },
+          coordinates: {
+            type: [Number], // Array of two numbers: [longitude, latitude]
+            required: false,
+          },
     },
 
     gender:{
         type: String,
         required:[true, 'gender is required']
+    },
+
+    vehicleNo:{
+        type:Number,
+        required:false
     }
     
 

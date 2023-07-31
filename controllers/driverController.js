@@ -20,6 +20,7 @@ exports.createDriver = CatchAsync(async(req, res, next) =>{
          email:req.body.email,
          gender:req.body.gender,
          contact:req.body.contact, 
+         vehicleNo:req.body.vehicleNo,
          role:"Driver",
          hashedPassword: hashedPassword
      })
@@ -127,8 +128,8 @@ exports.deleteDriverAccount = CatchAsync (async(req, res, next) => {
 //Update driver location continiously
 exports.updateDriverLocation = CatchAsync(async(req, res, next) => {
 
-    const longitude = Number(req.body.location.coordinates[0]);
-    const latitude = Number(req.body.location.coordinates[1]);
+    const longitude = Number(req.body.longitude);
+    const latitude = Number(req.body.latitude);
 
     // Find the user by ID
     const user = await Driver.findById( id = req.body.id);

@@ -22,7 +22,7 @@ const AdminSchema = new mongoose.Schema({
 
     contact:{
         type:String,
-        require:[true, 'contact is required']
+        required:[true, 'contact is required']
     },
    
     email:{
@@ -32,7 +32,10 @@ const AdminSchema = new mongoose.Schema({
         lowercase:true,
         validate : [validator.isEmail, 'FirstName is required']
     },
-   
+    location:{
+        type:String,
+        default:"Kumasi,Ghana"
+    },
     password:{
         type:String,
         required:[true, 'Password is required'],

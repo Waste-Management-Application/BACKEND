@@ -1,11 +1,28 @@
 const Customer = require ('../model/customer')
-
 const CatchAsync = require("../utils/CatchAsync");
 const AppError = require("../utils/apperror");
+const sendEmail = require("../utils/email");
+const sendSMS = require("../utils/SMS");
 
-//create a new customer
 exports.createCustomer = CatchAsync(async(req, res, next) =>{
     const newCustomer = await Customer.create(req.body);
+
+     // Sending a welcome email to the customer
+     try {
+        await sendEmail({
+            email: newCustomer.email,
+            subject: 'Welcome to Our Community!',
+            message: `Dear ${newCustomer.firstName},\n\nThank you for joining our community! We are excited to have you on board and hope you enjoy our services.\n\nPlease remember to Make a payment of GH₵25to Binbuddy in the app to activate our services .\n\nBest regards,\nThe Binbuddy Team`,
+        });
+    } catch (error) {
+        console.error('Error sending welcome email:', error);
+    }
+   // Sending an SMS to the customer
+   try {
+    await sendSMS(newCustomer.contact, `Dear ${newCustomer.firstName},\n\nWelcome to Our Community! We are excited to have you on board. \n\nPlease remember to Make a payment of GH₵25 to Binbuddy in the app to activate our services .\n\nBest regards,\nThe Binbuddy Team`);
+  } catch (error) {
+    console.error('Error sending SMS:', error);
+  }
 
     res.status(202).json({
         status:"success",
@@ -14,6 +31,8 @@ exports.createCustomer = CatchAsync(async(req, res, next) =>{
         }
     })
 })
+
+  
 
 //get all customers from database
 exports.getAllCustomers = CatchAsync(async(req, res, next) =>{
