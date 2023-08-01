@@ -281,7 +281,7 @@ exports.customerSignIn = CatchAsync(async (req, res, next) =>{
     // Restrict routes to certain users
     exports.restrictTo = (roles) =>{
         return (req, res, next) => {
-            currentUser = res.currentUser;
+           const currentUser = res.currentUser;
             //console.log(roles);
             if(!(roles.includes(currentUser.role))){
                 return next(
