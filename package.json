@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon connect.js"
   },
+  "engines": {
+    "node": ">=18.17.0",
+    "npm": ">=9.6.7"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -23,10 +27,11 @@
     "express": "^4.18.2",
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
-    "googlemaps": "^1.12.0",
+    "googlemaps": "^0.1.5",
     "hbs": "^4.2.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.13.20",
+    "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.10.0",
     "node-geocoder": "^4.2.0",
     "nodemailer": "^6.9.4",
@@ -37,8 +42,7 @@
     "tslib": "^2.5.3",
     "twilio": "^4.14.0",
     "uuid": "^9.0.0",
-    "validator": "^13.9.0",
-    "mongoose-auto-increment":"^5.0.1"
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "@types/randomstring": "^1.1.8",
