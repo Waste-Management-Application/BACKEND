@@ -12,19 +12,25 @@ const app = require("./app");
 
 dotenv.config({path:"./config.env"});
 
-mongoose
- 	.connect(process.env.DB, {
-	useCreateIndex: true,
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useFindAndModify: false
+// const connectionString = 'mongodb+srv://danielquavohunchojnr:MrQpJB7H8Yu0LNjn@binbuddy.vzmhest.mongodb.net/';
+ 
+const DB = process.env.DATABASE;
+mongoose.connect(DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex:true
+  
+})
+  .then(() => {
+    console.log('Connected to MongoDB Atlas!');
+    // Your further code goes here, e.g., defining models and routes.
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB Atlas:', error.message);
+  });
 
-	})
-	.then(() =>console.log("Database connection successful!"));
 
-
-
-const port = 4000;
+const port = process.env.PORT;
 
 const connect = app.listen(port, () =>{
 	console.log(`listening on ${port}`)
