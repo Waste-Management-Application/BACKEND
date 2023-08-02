@@ -1,40 +1,45 @@
 const mongoose = require('mongoose')
-const autoIncrement = require('mongoose-auto-increment')
 
-autoIncrement.initialize(mongoose.connection);
+// Create a separate collection to store the dustbin counter
+const dustbinCounterSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  sequence_value: { type: Number, default: 1 },
+});
 
-
+const DustbinCounter = mongoose.model('DustbinCounter', dustbinCounterSchema);
 
 
 const dustbinSchema = new mongoose.Schema({
-      
-      dustbinNo:{
-        type: Number,
-        //required: true,
-        unique:true
-      },
+  dustbinNo: {
+    type: String,
+    unique: true,
+  },
+  DateCreated: {
+    type: Date,
+    default: Date.now(),
+  },
+});
 
-      // dustbinID:{
-      //   type: String,
-      //   required:false
+dustbinSchema.pre('save', async function (next) {
+  if (!this.dustbinNo) {
+    const generatedDustbinNo = generateUniqueDustbinNumber();
+    this.dustbinNo = generatedDustbinNo;
+  }
+  next();
+});
 
-      // },
+function generateUniqueDustbinNumber() {
+  // Generate a random number between 1 and 999
+  const randomNumber = Math.floor(Math.random() * 999) + 1;
 
-      DateCreated: {
-        type:Date,
-        default: Date.now()
-    }
+  // Pad the random number with leading zeros to ensure it has three digits
+  const paddedNumber = randomNumber.toString().padStart(3, '0');
 
-      
+  // Combine the prefix 'DST' with the padded random number to create the dustbin number
+  const dustbinNumber = `DST${paddedNumber}`;
 
-})
-
-dustbinSchema.plugin(autoIncrement.plugin,{
-  model: 'Dustbin',
-  field: 'dustbinNo',
-  startAt: 1,
-  incrementBy: 1, 
-})
+  return dustbinNumber;
+}
 
 const dustbinRequestSchema= new mongoose.Schema({
   customer: {
