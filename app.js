@@ -31,15 +31,22 @@ app.use((req, res, next)=>{
 
 //DustbinRouter,taskRouter,vehicleRouter,feedbackRouter
 
-
+app.get("/", (req, res) => {
+    res.send("Hello from BinBuddy API!");
+  });
 // specified routes for admin and normal Users
 app.use("/api/BinBuddy",[ UsersRouter]);
 app.use("/api/BinBuddyAdmin", [adminRoutes]);
 
 // handling unhandled routes
 app.all("*", (req, res, next)=>{
+   
     next(new AppError(`Can't find ${req.originalUrl} on the server`, 404))
 })
+
+app.get("/", (req, res) => {
+    res.send("Hello from BinBuddy API!");
+  });
 
 //handling global errors
 
