@@ -9,10 +9,10 @@ const AppError = require('./utils/apperror')
 //const path = require('path')
 
 const UsersRouter = require("./routes/routes");
-// const DustbinRouter = require("./controllers/dustbinController")
-// const taskRouter = require("./controllers/taskController")
-// const vehicleRouter = require("./controllers/vehicleController")
-// const feedbackRouter = require("./controllers/feedbackController")
+const DustbinRouter = require("./controllers/dustbinController")
+const taskRouter = require("./controllers/taskController")
+const vehicleRouter = require("./controllers/vehicleController")
+const feedbackRouter = require("./controllers/feedbackController")
 const adminRoutes = require('./routes/adminRoutes')
 
 
@@ -29,13 +29,13 @@ app.use((req, res, next)=>{
     next();
 });
 
-//DustbinRouter,taskRouter,vehicleRouter,feedbackRouter
+
 
 app.get("/", (req, res) => {
     res.send("Hello from BinBuddy API!");
   });
 // specified routes for admin and normal Users
-app.use("/api/BinBuddy",[ UsersRouter]);
+app.use("/api/BinBuddy",[ UsersRouter,DustbinRouter,taskRouter,vehicleRouter,feedbackRouter]);
 app.use("/api/BinBuddyAdmin", [adminRoutes]);
 
 // handling unhandled routes
