@@ -1,13 +1,5 @@
 const mongoose = require('mongoose')
 
-// Create a separate collection to store the dustbin counter
-const dustbinCounterSchema = new mongoose.Schema({
-  _id: { type: String, required: true },
-  sequence_value: { type: Number, default: 1 },
-});
-
-const DustbinCounter = mongoose.model('DustbinCounter', dustbinCounterSchema);
-
 
 const dustbinSchema = new mongoose.Schema({
   dustbinNo: {
