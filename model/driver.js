@@ -63,7 +63,7 @@ const DriverSchema = new mongoose.Schema({
     },
 
     vehicleNo:{
-        type:Number,
+        type:String,
         required:false
     }
     
