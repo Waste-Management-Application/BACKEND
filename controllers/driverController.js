@@ -7,7 +7,7 @@ const randomstring = require('randomstring');
 const CatchAsync = require("../utils/CatchAsync");
 const AppError = require("../utils/apperror");
 
-//create a new Driver
+//create a new Driver in the database
 exports.createDriver = CatchAsync(async(req, res, next) =>{
      // Generate a random password for driver which is of 8 characters
      const password = randomstring.generate(8);
